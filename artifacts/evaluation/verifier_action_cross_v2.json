@@ -1,0 +1,24 @@
+{
+  "ALWAYS_ON_MOCK_JUDGE": {
+    "A_NLI_CORRECT_ACTION_CORRECT": 14,
+    "B_NLI_CORRECT_ACTION_WRONG": 0,
+    "C_NLI_WRONG_ACTION_CORRECT": 2,
+    "D_NLI_WRONG_ACTION_WRONG": 14,
+    "E_NLI_NOT_USED": 20
+  },
+  "NLI_ONLY": {
+    "A_NLI_CORRECT_ACTION_CORRECT": 14,
+    "B_NLI_CORRECT_ACTION_WRONG": 0,
+    "C_NLI_WRONG_ACTION_CORRECT": 2,
+    "D_NLI_WRONG_ACTION_WRONG": 14,
+    "E_NLI_NOT_USED": 20
+  },
+  "NLI_SELECTIVE_LLM": {
+    "A_NLI_CORRECT_ACTION_CORRECT": 14,
+    "B_NLI_CORRECT_ACTION_WRONG": 0,
+    "C_NLI_WRONG_ACTION_CORRECT": 2,
+    "D_NLI_WRONG_ACTION_WRONG": 14,
+    "E_NLI_NOT_USED": 20
+  },
+  "explanation": "Because the small NLI model is heavily overconfident when predicting INSUFFICIENT_EVIDENCE on complex enterprise contradictions, the Confidence Gate (< 0.90) never triggers (0% recall). Consequently, the Selective LLM Adjudicator is never invoked (invocation rate = 0%). This mathematically forces the NLI_SELECTIVE_LLM architecture to behave identically to NLI_ONLY, meaning the action engine produces the exact same failure patterns."
+}

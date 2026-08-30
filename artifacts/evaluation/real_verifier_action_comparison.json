@@ -1,0 +1,122 @@
+{
+  "NO_CHECKER": {
+    "total_cases": 50,
+    "action_accuracy": 0.5,
+    "unsafe_pass_rate": 0.46,
+    "unnecessary_escalation_rate": 0.0,
+    "escalation_rate": 0.0,
+    "gemini_invocations": 0,
+    "gemini_invocation_rate": 0.0,
+    "gemini_calls_saved": 50,
+    "gemini_calls_saved_percent": 1.0,
+    "p50_latency_ms": 2.358400000957772,
+    "p95_latency_ms": 6.473099998402176,
+    "cross_analysis": {
+      "A": 0,
+      "B": 0,
+      "C": 13,
+      "D": 17,
+      "E": 20
+    }
+  },
+  "SMALL_NLI": {
+    "total_cases": 50,
+    "action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "escalation_rate": 0.32,
+    "gemini_invocations": 0,
+    "gemini_invocation_rate": 0.0,
+    "gemini_calls_saved": 50,
+    "gemini_calls_saved_percent": 1.0,
+    "p50_latency_ms": 6.9105999973544385,
+    "p95_latency_ms": 105.74439999982133,
+    "cross_analysis": {
+      "A": 14,
+      "B": 0,
+      "C": 2,
+      "D": 14,
+      "E": 20
+    }
+  },
+  "BASE_NLI": {
+    "total_cases": 50,
+    "action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "escalation_rate": 0.32,
+    "gemini_invocations": 0,
+    "gemini_invocation_rate": 0.0,
+    "gemini_calls_saved": 50,
+    "gemini_calls_saved_percent": 1.0,
+    "p50_latency_ms": 6.004599999869242,
+    "p95_latency_ms": 1290.5897999989975,
+    "cross_analysis": {
+      "A": 14,
+      "B": 0,
+      "C": 2,
+      "D": 14,
+      "E": 20
+    }
+  },
+  "REAL_GEMINI_ALWAYS_ON": {
+    "total_cases": 50,
+    "action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "escalation_rate": 0.32,
+    "gemini_invocations": 50,
+    "gemini_invocation_rate": 1.0,
+    "gemini_calls_saved": 0,
+    "gemini_calls_saved_percent": 0.0,
+    "p50_latency_ms": 5.174900001293281,
+    "p95_latency_ms": 13948.177999998734,
+    "cross_analysis": {
+      "A": 14,
+      "B": 0,
+      "C": 2,
+      "D": 14,
+      "E": 20
+    }
+  },
+  "NLI_SELECTIVE_REAL_GEMINI": {
+    "total_cases": 50,
+    "action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "escalation_rate": 0.32,
+    "gemini_invocations": 0,
+    "gemini_invocation_rate": 0.0,
+    "gemini_calls_saved": 50,
+    "gemini_calls_saved_percent": 1.0,
+    "p50_latency_ms": 5.606300001090858,
+    "p95_latency_ms": 243.96120000164956,
+    "cross_analysis": {
+      "A": 14,
+      "B": 0,
+      "C": 2,
+      "D": 14,
+      "E": 20
+    }
+  },
+  "HIGH_SEVERITY_SELECTIVE_GEMINI": {
+    "total_cases": 50,
+    "action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "escalation_rate": 0.32,
+    "gemini_invocations": 19,
+    "gemini_invocation_rate": 0.38,
+    "gemini_calls_saved": 31,
+    "gemini_calls_saved_percent": 0.62,
+    "p50_latency_ms": 8.815299999696435,
+    "p95_latency_ms": 2678.023199998279,
+    "cross_analysis": {
+      "A": 14,
+      "B": 0,
+      "C": 2,
+      "D": 14,
+      "E": 20
+    }
+  }
+}

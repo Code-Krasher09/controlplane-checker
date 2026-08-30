@@ -1,0 +1,67 @@
+# Python Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+.env.virtualenv
+
+# Python Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# Environment and Secrets (CRITICAL)
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Internal Master PRDs / Specifications (FROZEN)
+ControlPlane_Round2_Master_Documentation_Pack_v1.2_FROZEN/
+ControlPlane_Round2_Master_*/
+
+# Node / Frontend Artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database & Cache Runtime Data
+*.sqlite3
+*.db
+*.sqlite
+data/index/*.bin
+
+# Logs & OS / IDE Specific
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary Scratch Files & One-off Scripts
+temp_*
+*.tmp
+scratch/
+fix_*.py
+cleanup_*.py
+run_sanity.py
+run_full_eval.py
+package-lock.json

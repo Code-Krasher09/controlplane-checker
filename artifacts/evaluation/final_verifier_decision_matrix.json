@@ -1,0 +1,64 @@
+{
+  "SMALL_NLI": {
+    "micro_accuracy": 0.7666666666666667,
+    "macro_f1": 0.7666666666666666,
+    "contradiction_recall": 0.8,
+    "insufficient_recall": 0.8,
+    "holdout_action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "p95_latency_ms": 105.74439999982133,
+    "gemini_invocation_rate": 0.0,
+    "cost_per_case": "$0.00"
+  },
+  "BASE_NLI": {
+    "micro_accuracy": 0.8333333333333334,
+    "macro_f1": 0.8333333333333334,
+    "contradiction_recall": 0.9,
+    "insufficient_recall": 0.9,
+    "holdout_action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "p95_latency_ms": 1290.5897999989975,
+    "gemini_invocation_rate": 0.0,
+    "cost_per_case": "$0.00"
+  },
+  "REAL_GEMINI_ALWAYS_ON": {
+    "micro_accuracy": 0.8666666666666667,
+    "macro_f1": 0.8666666666666667,
+    "contradiction_recall": 0.9,
+    "insufficient_recall": 0.7,
+    "holdout_action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "p95_latency_ms": 13948.177999998734,
+    "gemini_invocation_rate": 1.0,
+    "cost_per_case": "UNMEASURED (Token counts tracked)"
+  },
+  "NLI_SELECTIVE_REAL_GEMINI": {
+    "micro_accuracy": "N/A (Architecture)",
+    "macro_f1": "N/A",
+    "contradiction_recall": "N/A",
+    "insufficient_recall": "N/A",
+    "holdout_action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "p95_latency_ms": 243.96120000164956,
+    "gemini_invocation_rate": 0.0,
+    "calls_saved_percent": 1.0,
+    "cost_per_case": "Proportional to invocation rate"
+  },
+  "HIGH_SEVERITY_SELECTIVE_GEMINI": {
+    "micro_accuracy": "N/A (Architecture)",
+    "macro_f1": "N/A",
+    "contradiction_recall": "N/A",
+    "insufficient_recall": "N/A",
+    "holdout_action_accuracy": 0.64,
+    "unsafe_pass_rate": 0.24,
+    "unnecessary_escalation_rate": 0.1,
+    "p95_latency_ms": 2678.023199998279,
+    "gemini_invocation_rate": 0.38,
+    "calls_saved_percent": 0.62,
+    "cost_per_case": "Proportional to invocation rate"
+  }
+}

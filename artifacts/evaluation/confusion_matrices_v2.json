@@ -1,0 +1,34 @@
+{
+  "nli_label": {
+    "SUPPORTED": {
+      "INSUFFICIENT_EVIDENCE": 22,
+      "NONE": 3
+    },
+    "CONTRADICTED": {
+      "INSUFFICIENT_EVIDENCE": 9
+    },
+    "INSUFFICIENT_EVIDENCE": {
+      "INSUFFICIENT_EVIDENCE": 8
+    }
+  },
+  "final_action": {
+    "ALLOW": {
+      "ALLOW": 20,
+      "WARN": 8,
+      "ESCALATE": 13
+    },
+    "WARN": {
+      "ALLOW": 2,
+      "WARN": 1
+    },
+    "ABSTAIN": {},
+    "REPAIR": {},
+    "BLOCK": {
+      "ALLOW": 4,
+      "ESCALATE": 1
+    },
+    "ESCALATE": {
+      "ESCALATE": 21
+    }
+  }
+}

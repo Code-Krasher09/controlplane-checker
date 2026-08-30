@@ -1,0 +1,21 @@
+{
+  "total_cases": 180,
+  "exact_duplicates": 4,
+  "normalized_duplicates": 4,
+  "action_distribution": {
+    "ALLOW": 99,
+    "ESCALATE": 43,
+    "BLOCK": 20,
+    "WARN": 18
+  },
+  "nli_label_distribution": {
+    "SUPPORTED": 55,
+    "CONTRADICTED": 24,
+    "INSUFFICIENT_EVIDENCE": 18
+  },
+  "category_distribution": {
+    "CUSTOMER_SUPPORT": 65,
+    "INTERNAL_KNOWLEDGE": 33,
+    "DECISION_SUPPORT": 82
+  }
+}

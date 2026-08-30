@@ -1,0 +1,18 @@
+{
+  "WITH_SEMANTIC_CONSISTENCY": {
+    "tier1_invocations": 32,
+    "tier1_invocation_rate": 0.64,
+    "unnecessary_tier1_count": 0,
+    "missed_high_risk_count": 0,
+    "avg_latency_ms": 232.66,
+    "total_cost_usd": 0.000254
+  },
+  "WITHOUT_SEMANTIC_CONSISTENCY": {
+    "tier1_invocations": 32,
+    "tier1_invocation_rate": 0.64,
+    "unnecessary_tier1_count": 0,
+    "missed_high_risk_count": 0,
+    "avg_latency_ms": 6.12,
+    "total_cost_usd": 0.000254
+  }
+}

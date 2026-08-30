@@ -1,0 +1,64 @@
+{
+  "failure_distribution": {
+    "NLI_VERIFICATION": {
+      "count": 26,
+      "percentage": 61.904761904761905
+    },
+    "ACTION_ENGINE": {
+      "count": 4,
+      "percentage": 9.523809523809524
+    },
+    "CONFIDENCE_GATE": {
+      "count": 5,
+      "percentage": 11.904761904761903
+    },
+    "RISK_ROUTING": {
+      "count": 7,
+      "percentage": 16.666666666666664
+    }
+  },
+  "routing_coverage": {
+    "expected_tier1": 42,
+    "actual_tier1": 44,
+    "false_skips": 3,
+    "unnecessary_tier1": 5,
+    "expected_adjudication": 10,
+    "actual_adjudication": 0,
+    "missed_adjudication": 10,
+    "unnecessary_adjudication": 0
+  },
+  "confusion_matrices": {
+    "nli_label": {
+      "SUPPORTED": {
+        "INSUFFICIENT_EVIDENCE": 22,
+        "NONE": 3
+      },
+      "CONTRADICTED": {
+        "INSUFFICIENT_EVIDENCE": 9
+      },
+      "INSUFFICIENT_EVIDENCE": {
+        "INSUFFICIENT_EVIDENCE": 8
+      }
+    },
+    "final_action": {
+      "ALLOW": {
+        "ALLOW": 20,
+        "WARN": 8,
+        "ESCALATE": 13
+      },
+      "WARN": {
+        "ALLOW": 2,
+        "WARN": 1
+      },
+      "ABSTAIN": {},
+      "REPAIR": {},
+      "BLOCK": {
+        "ALLOW": 4,
+        "ESCALATE": 1
+      },
+      "ESCALATE": {
+        "ESCALATE": 21
+      }
+    }
+  }
+}
