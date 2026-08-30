@@ -100,7 +100,7 @@ export const App: React.FC = () => {
         fontSize: '0.75rem',
         color: 'var(--text-muted)',
       }}>
-        ControlPlane Checker Prototype V1.3 • High-Severity Selective Gemini Hybrid Architecture • Tested across 126 regression benchmarks
+        ControlPlane Checker Prototype V1.3 • High-Severity Selective Gemini Hybrid Architecture • Tested across 130 regression benchmarks
       </footer>
     </div>
   );

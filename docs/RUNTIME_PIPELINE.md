@@ -4,7 +4,7 @@
 - **V1.0:** Synchronous rule baseline.
 - **V1.1:** Persistence Foundation (PostgreSQL/Redis) & Tier 0-2 Vertical Slice.
 - **V1.2:** Enterprise Context, Selective Adjudication & Forensic Audit.
-- **V1.3 (Current Production):** High-Severity Selective Gemini Hybrid Architecture. Low/medium risk flows execute via local DeBERTa-v3-small (P95 ~105ms), while High/Critical consequence scopes and boundary ambiguities route to Gemini Flash Lite (86.7% accuracy, 100% contradiction recall), saving 62% of cloud LLM invocations. Missing evidence strictly enforces `INSUFFICIENT_EVIDENCE` without invoking the LLM.
+- **V1.3 (Current Production):** High-Severity Selective Gemini Hybrid Architecture. Low/medium risk flows execute via local DeBERTa-v3-small (P95 53.53 ms in the local prototype environment), while High/Critical consequence scopes and boundary ambiguities route to Gemini Flash Lite (86.7% microbench accuracy, 100% contradiction recall), saving 58.0% of cloud Gemini invocations on the 50-case holdout. Missing evidence strictly enforces `INSUFFICIENT_EVIDENCE` without invoking the LLM.
 
 ## 1. End-to-End Enterprise Context Request Lifecycle
 

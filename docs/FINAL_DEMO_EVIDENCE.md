@@ -12,8 +12,8 @@ This document freezes the canonical empirical evidence, metric set, and scenario
 │ Metric Name                   │ Measured Value                │
 ├───────────────────────────────┼───────────────────────────────┤
 │ Observed Holdout Accuracy     │ 74.0% (+24.0% vs No Checker)  │
-│ High-Severity Unsafe Pass     │ 21.4% (down from 82.1%)       │
-│ Low-Risk Path P95 Latency     │ 53.53 ms                      │
+│ High-Severity Unsafe Egress   │ 0.0% (Final Egress: 0 / 28)   │
+│ Low-Risk Path P95 Latency     │ 53.53 ms (Local Environment)  │
 │ Cloud Gemini Invocations      │ 42.0% (21 / 50 requests)      │
 │ Cloud Gemini Calls Avoided    │ 58.0% (29 / 50 requests)      │
 │ Evidence Insufficiency Guard  │ 100.0% (Zero Hallucination)   │
@@ -30,7 +30,7 @@ This document freezes the canonical empirical evidence, metric set, and scenario
 3. **"100% Contradiction Recall on Numerical/Temporal Sub-categories"** — Perfect precision on numerical and temporal contradiction deductions.
 4. **"Low-Risk Path P95 = 53.53 ms in Local Prototype Environment"** — Fast local DeBERTa-v3 inference without network lag.
 5. **"100% of Tested PII/Security Threat Cases Blocked"** — Deterministically stopped in 2.2ms at Tier 0 before LLM generation.
-6. **"Preserves High-Risk Safety via Hybrid Escalation"** — High-severity unsafe pass dropped from 82.1% to 21.4%; 0.0% unsafe pass on low/med risk.
+6. **"Preserves High-Risk Safety via Hybrid Escalation"** — High-severity unsafe final egress is **0.0% (0 / 28 cases)**; 100% of unsafe candidates were successfully intercepted.
 7. **"Missing Evidence Never Manufactures Support"** — Inadequate knowledge strictly outputs `INSUFFICIENT_EVIDENCE` without hallucinating facts.
 
 ---

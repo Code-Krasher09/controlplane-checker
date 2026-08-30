@@ -36,7 +36,8 @@ User / Application Request
                ▼                               ▼
 ┌──────────────────────────────┐┌──────────────────────────────┐
 │ 3A. Local NLI Fast Path      ││ 3B. Cloud Gemini Adjudication │
-│     DeBERTa-v3-small (<10ms) ││     Gemini Flash Lite Judge  │
+│     DeBERTa-v3-small — Local ││     Gemini Flash Lite Judge  │
+│     Fast Path                ││                              │
 └──────────────┬───────────────┘└──────────────┬───────────────┘
                │                               │
                └───────────────┬───────────────┘
@@ -57,7 +58,7 @@ User / Application Request
 
 - **Observed Action Accuracy:** **74.0%** (+24.0% vs unprotected baseline)
 - **Cloud Gemini Calls Avoided:** **58.0%** (29 of 50 holdout requests routed to local fast path)
-- **Low-Risk Path P95 Latency:** **53.53 ms** in local prototype environment
+- **Low-Risk Path P95 Latency:** **53.53 ms** in local prototype environment (P50: 5.58 ms)
 - **High-Severity Unsafe Final Egress:** **0.0% (0 / 28 cases)**
 - **Tested PII / Threats Blocked:** **100.0% (4 / 4 SSN prompt cases)**
 - **Epistemic Invariant:** Missing knowledge strictly bypasses Gemini to prevent hallucination
@@ -180,7 +181,7 @@ python scripts/run_phase12a_evidence_pack.py
 
 ## 8. Demo Scenarios (Interactive UI)
 
-1. **Safe Fast Path (Low Risk):** Routine retail return inquiry $\rightarrow$ Local DeBERTa-v3 $\rightarrow$ `ALLOW` (~5ms, 0 cloud calls).
+1. **Safe Fast Path (Low Risk):** Routine retail return inquiry $\rightarrow$ Local DeBERTa-v3 $\rightarrow$ `ALLOW` (Local Fast Path, 53.53 ms P95 in local prototype environment, 0 cloud calls).
 2. **PII / Threat Hard Block:** Prompt contains SSN `111-22-3301` $\rightarrow$ Tier 0 Guard $\rightarrow$ `BLOCK` (~2ms, 0 tokens).
 3. **High-Severity Gemini Judge:** Financial courtesy fee waiver $\rightarrow$ Gemini Flash Lite $\rightarrow$ `ALLOW` (~480ms, deep deduction).
 4. **Contradiction $\rightarrow$ Repair $\rightarrow$ ALLOW:** Hallucinated $1,000 waiver $\rightarrow$ Auto-repaired to $200 capped waiver $\rightarrow$ Reverified $\rightarrow$ `ALLOW`.

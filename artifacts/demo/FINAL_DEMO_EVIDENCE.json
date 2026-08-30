@@ -11,8 +11,8 @@
   },
   "canonical_pitch_metrics": {
     "action_accuracy": "74.0%",
-    "high_severity_unsafe_pass_rate": "21.4% (down from 82.1% baseline)",
-    "low_risk_p95_latency": "53.53 ms",
+    "high_severity_unsafe_final_egress": "0.0% (0 / 28 cases, down from 82.1% baseline)",
+    "low_risk_p95_latency": "53.53 ms (in local prototype environment)",
     "cloud_gemini_invocation_rate": "42.0%",
     "cloud_gemini_calls_avoided": "58.0%",
     "evidence_insufficiency_correctness": "100.0%",

@@ -20,42 +20,42 @@ export const ControlRoomView: React.FC<ControlRoomViewProps> = ({ onSelectTrace 
     {
       title: 'Observed Holdout Accuracy',
       value: '74.0%',
-      subtext: '+24.0% vs Unprotected AI (50.0%)',
+      subtext: '50-Case Benchmark Suite • +24.0% vs Baseline (50.0%)',
       icon: <ShieldCheck size={20} color="#34d399" />,
       highlight: '#34d399',
     },
     {
       title: 'Cloud LLM Calls Saved',
       value: '58.0%',
-      subtext: '29 of 50 holdout requests avoided cloud API',
+      subtext: '50-Case Benchmark • 29 of 50 holdout requests avoided cloud API',
       icon: <TrendingDown size={20} color="#38bdf8" />,
       highlight: '#38bdf8',
     },
     {
       title: 'Low-Risk Path P95 Latency',
       value: '53.53 ms',
-      subtext: 'Ultra-fast local DeBERTa-v3 inference',
+      subtext: 'Local Prototype Environment • Sub-100ms local DeBERTa path',
       icon: <Clock size={20} color="#a855f7" />,
       highlight: '#a855f7',
     },
     {
       title: 'Critical Threats Blocked',
       value: '100.0%',
-      subtext: '4/4 PII & security threats blocked at Tier 0',
+      subtext: 'Tested Cases • 4/4 SSN PII & security threats blocked at Tier 0',
       icon: <Lock size={20} color="#fb7185" />,
       highlight: '#fb7185',
     },
     {
       title: 'Self-Healing Repairs',
       value: '8 Cases',
-      subtext: 'Auto-repaired & reverified compliant',
+      subtext: '50-Case Benchmark • Auto-repaired & reverified compliant',
       icon: <Wrench size={20} color="#22d3ee" />,
       highlight: '#22d3ee',
     },
     {
       title: 'Conservative Escalations',
       value: '18 Cases',
-      subtext: 'Inadequate / ambiguous cases routed to humans',
+      subtext: '50-Case Benchmark • Inadequate / ambiguous cases routed to humans',
       icon: <AlertOctagon size={20} color="#fbbf24" />,
       highlight: '#fbbf24',
     },
@@ -167,7 +167,7 @@ export const ControlRoomView: React.FC<ControlRoomViewProps> = ({ onSelectTrace 
             PROTOTYPE BENCHMARK STATUS
           </div>
           <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#38bdf8', marginTop: '2px' }}>
-            126 / 126 Passing
+            130 / 130 Passing
           </div>
           <div style={{ fontSize: '0.75rem', color: '#34d399', fontWeight: 600, marginTop: '2px' }}>
             100% Test Suite Verification
