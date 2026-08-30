@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
+  /* ── Legacy surface tokens (used by Navbar, ControlRoomView, App) ── */
   --bg-primary: #090d16;
   --bg-secondary: #0f172a;
   --bg-card: rgba(15, 23, 42, 0.75);
@@ -10,10 +11,12 @@
   --border-active: rgba(56, 189, 248, 0.35);
   --border-focus: rgba(99, 102, 241, 0.5);
 
+  /* ── Text tokens ── */
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
+  /* ── Accent tokens (legacy — used by Navbar, ControlRoomView) ── */
   --accent-blue: #38bdf8;
   --accent-indigo: #6366f1;
   --accent-emerald: #10b981;
@@ -22,11 +25,33 @@
   --accent-purple: #a855f7;
   --accent-cyan: #06b6d4;
 
+  /* ── Final Verdict Colors — EXCLUSIVELY for Action Engine output ── */
+  --verdict-allow: #10b981;
+  --verdict-block: #ef4444;
+  --verdict-escalate: #f59e0b;
+  --verdict-repair: #0ea5e9;
+
+  /* ── Intermediate State Colors — pipeline stage pass/warn/fail ── */
+  --state-pass: #2dd4bf;       /* Teal-400 — 9.8:1 on #0a0a0a ✓ */
+  --state-warn: #fbbf24;       /* Amber-400 — 13.1:1 on #0a0a0a ✓ */
+  --state-fail: #fb7185;       /* Rose-400 — 6.4:1 on #0a0a0a ✓ */
+  --state-active: #38bdf8;     /* Sky-400 — 8.6:1 on #0a0a0a ✓ */
+  --state-skip: #64748b;       /* Slate-500 — skipped/inactive stages */
+
+  /* ── Shade-based Surface Layering (Vercel-style) ── */
+  --bg-canvas: #000000;
+  --bg-surface-0: #0a0a0a;
+  --bg-surface-1: #111111;
+  --bg-surface-2: #1a1a1a;
+  --bg-surface-hover: #1e1e1e;
+
+  /* ── Radii ── */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
 
+  /* ── Shadows ── */
   --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
   --shadow-glow-blue: 0 0 25px rgba(56, 189, 248, 0.15);
   --shadow-glow-emerald: 0 0 25px rgba(16, 185, 129, 0.15);
@@ -54,7 +79,9 @@ code, pre, .font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Glassmorphism Card Utility */
+/* ══════════════════════════════════════════════════════════════════════
+   LEGACY: Glassmorphism Card (used by Navbar, ControlRoomView, App)
+   ══════════════════════════════════════════════════════════════════════ */
 .glass-card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
@@ -79,7 +106,7 @@ code, pre, .font-mono {
   transform: translateY(-1px);
 }
 
-/* Pipeline Stage Glows */
+/* Pipeline Stage Glows (legacy — ControlRoomView may reference) */
 .stage-active {
   border-color: var(--accent-blue) !important;
   box-shadow: var(--shadow-glow-blue) !important;
@@ -94,7 +121,9 @@ code, pre, .font-mono {
   box-shadow: var(--shadow-glow-rose) !important;
 }
 
-/* Badges */
+/* ══════════════════════════════════════════════════════════════════════
+   LEGACY: Badges (used by ControlRoomView trace table)
+   ══════════════════════════════════════════════════════════════════════ */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -102,7 +131,7 @@ code, pre, .font-mono {
   padding: 3px 8px;
   border-radius: 9999px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -137,7 +166,272 @@ code, pre, .font-mono {
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-/* Buttons */
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Surface Panels (shade-based — LiveTraceView)
+   ══════════════════════════════════════════════════════════════════════ */
+.surface-panel {
+  background: var(--bg-surface-0);
+  border-radius: var(--radius-lg);
+  border: none;
+  transition: background 0.15s ease;
+}
+
+.surface-panel-interactive {
+  cursor: pointer;
+}
+
+.surface-panel-interactive:hover {
+  background: var(--bg-surface-1);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Verdict Sticky Header
+   ══════════════════════════════════════════════════════════════════════ */
+.verdict-sticky {
+  position: sticky;
+  top: 60px; /* below navbar */
+  z-index: 40;
+  background: var(--bg-surface-0);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.verdict-text {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.verdict-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Verdict Badges (exclusive verdict-color tokens)
+   ══════════════════════════════════════════════════════════════════════ */
+.badge-verdict-allow {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--verdict-allow);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-verdict-block {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--verdict-block);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.badge-verdict-escalate {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--verdict-escalate);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.badge-verdict-repair {
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--verdict-repair);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Waterfall Trace Rows
+   ══════════════════════════════════════════════════════════════════════ */
+.waterfall-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-0);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.waterfall-row:hover {
+  background: var(--bg-surface-1);
+}
+
+.waterfall-row.is-child {
+  margin-left: 28px;
+  padding: 8px 14px;
+}
+
+.waterfall-row.is-skipped {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.waterfall-row-detail {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.2s ease, opacity 0.15s ease, padding 0.2s ease;
+  padding: 0 14px;
+  background: var(--bg-surface-1);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  margin-top: -4px;
+}
+
+.waterfall-row-detail.is-expanded {
+  max-height: 500px;
+  opacity: 1;
+  padding: 12px 14px;
+}
+
+.waterfall-row-detail.is-child {
+  margin-left: 28px;
+}
+
+/* Timing bar proportional width */
+.waterfall-timing-bar {
+  height: 3px;
+  border-radius: 2px;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: State Badges (for intermediate pipeline stages)
+   ══════════════════════════════════════════════════════════════════════ */
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+}
+
+.state-badge-pass {
+  background: rgba(45, 212, 191, 0.12);
+  color: var(--state-pass);
+}
+
+.state-badge-warn {
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--state-warn);
+}
+
+.state-badge-fail {
+  background: rgba(251, 113, 133, 0.12);
+  color: var(--state-fail);
+}
+
+.state-badge-skip {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--state-skip);
+}
+
+.state-badge-active {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--state-active);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Diff View (Repair before/after)
+   ══════════════════════════════════════════════════════════════════════ */
+.diff-line-removed {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--verdict-block);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--state-fail);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.diff-line-added {
+  background: rgba(16, 185, 129, 0.1);
+  border-left: 3px solid var(--verdict-allow);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--state-pass);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Loading/Shimmer Animations
+   ══════════════════════════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-bar {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-1) 25%,
+    var(--bg-surface-2) 50%,
+    var(--bg-surface-1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseVerdict {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.verdict-loading {
+  animation: pulseVerdict 1.2s infinite ease-in-out;
+}
+
+/* Cascade delay utility — used for staggered waterfall row appearance */
+.cascade-delay-1 { animation-delay: 0.05s; }
+.cascade-delay-2 { animation-delay: 0.1s; }
+.cascade-delay-3 { animation-delay: 0.15s; }
+.cascade-delay-4 { animation-delay: 0.2s; }
+.cascade-delay-5 { animation-delay: 0.25s; }
+.cascade-delay-6 { animation-delay: 0.3s; }
+.cascade-delay-7 { animation-delay: 0.35s; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   NEW: Scenario button in LiveTraceView (shade-based, border on select)
+   ══════════════════════════════════════════════════════════════════════ */
+.scenario-btn {
+  padding: 12px 14px;
+  text-align: left;
+  background: var(--bg-surface-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.scenario-btn:hover {
+  background: var(--bg-surface-2);
+}
+
+.scenario-btn.is-active {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: var(--accent-blue);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Buttons (shared)
+   ══════════════════════════════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -175,7 +469,9 @@ code, pre, .font-mono {
   border-color: rgba(148, 163, 184, 0.3);
 }
 
-/* Animations */
+/* ══════════════════════════════════════════════════════════════════════
+   Animations (legacy)
+   ══════════════════════════════════════════════════════════════════════ */
 @keyframes pulseGlow {
   0%, 100% {
     opacity: 0.6;
@@ -191,7 +487,18 @@ code, pre, .font-mono {
   animation: pulseGlow 2s infinite ease-in-out;
 }
 
-/* Custom Scrollbar */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Custom Scrollbar
+   ══════════════════════════════════════════════════════════════════════ */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
