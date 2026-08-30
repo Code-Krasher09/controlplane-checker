@@ -12,7 +12,7 @@ from app.domain.models import (
 )
 from app.persistence.models import PolicyConfig, PolicyVersion
 from app.persistence.redis import RuntimeStateStore
-from .adjudicator import Adjudicator, MockAdjudicator
+from .adjudicator import Adjudicator, MockAdjudicator, RealLLMAdjudicator
 from .gate import ConfidenceGate
 
 
@@ -26,8 +26,8 @@ class AdjudicationService:
         state_store: Optional[RuntimeStateStore] = None,
     ):
         self.gate = gate or ConfidenceGate()
-        self.adjudicator = adjudicator or MockAdjudicator()
         self.state_store = state_store or RuntimeStateStore()
+        self.adjudicator = adjudicator or RealLLMAdjudicator()
 
     async def evaluate_and_adjudicate(
         self,

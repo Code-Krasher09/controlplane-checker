@@ -77,12 +77,16 @@ class EvidenceQualityEvaluator:
 
         # 5. Composite Quality Score
         # Formula: 0.35 * relevance + 0.25 * authority + 0.20 * freshness + 0.20 * completeness
-        composite_score = (
-            (0.35 * relevance_score)
-            + (0.25 * auth_score)
-            + (0.20 * freshness_score)
-            + (0.20 * completeness_score)
-        )
+        if relevance_score < 0.15:
+            # Gating penalty for irrelevant evidence: authority cannot prop up unrelated documents
+            composite_score = relevance_score * 0.5
+        else:
+            composite_score = (
+                (0.35 * relevance_score)
+                + (0.25 * auth_score)
+                + (0.20 * freshness_score)
+                + (0.20 * completeness_score)
+            )
         quality_score = round(max(0.0, min(1.0, composite_score)), 4)
 
         return ClaimEvidenceQuality(
@@ -120,9 +124,14 @@ class EvidenceQualityEvaluator:
         thresholds = policy_thresholds or {}
         min_quality = float(thresholds.get("min_evidence_quality", self.DEFAULT_MIN_QUALITY_THRESHOLD))
 
-        # Check if at least one evidence snippet exceeds the quality threshold
-        best_quality = max((e.quality.quality_score if e.quality and e.quality.quality_score else 0.0) for e in evidence_list)
-        return best_quality >= min_quality
+        # Check if at least one evidence snippet exceeds quality threshold AND has substantive relevance
+        for e in evidence_list:
+            if e.quality:
+                q_score = e.quality.quality_score
+                r_score = e.quality.relevance
+                if q_score >= min_quality and r_score >= 0.15:
+                    return True
+        return False
 
     def _compute_relevance(self, claim: str, evidence: str) -> float:
         """Compute lexical overlap relevance between claim and evidence snippet."""
@@ -136,7 +145,13 @@ class EvidenceQualityEvaluator:
             return 0.0
 
         overlap = claim_words.intersection(evidence_words)
-        return len(overlap) / max(1, len(claim_words))
+        if not overlap or len(overlap) < 2:
+            # Single word coincidence (e.g. "standard") does not establish topic relevance
+            return len(overlap) / max(1, len(claim_words))
+
+        # 2+ matching topic stems establish strong domain relevance
+        coverage = len(overlap) / min(6, len(claim_words))
+        return round(min(1.0, coverage), 4)
 
     def _compute_completeness(self, claim: str, evidence: str) -> float:
         """Estimate whether evidence adequately covers the proposition."""

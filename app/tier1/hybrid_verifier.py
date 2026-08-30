@@ -87,7 +87,29 @@ class HighSeverityHybridVerifier(NLIVerifier):
         )
 
         # -------------------------------------------------------------
-        # HIGH-SEVERITY PATH -> GEMINI SEMANTIC VERIFIER
+        # STEP 1: LOCAL SEMANTIC VERIFIER (FAST PATH)
+        # -------------------------------------------------------------
+        local_res = self.local_verifier.verify(claim, evidence)
+
+        # Clear Contradictions immediately initiate ActionEngine / Repair Loop
+        if local_res.label == "CONTRADICTED":
+            return local_res
+
+        # Ambiguous / Marginal NLI triggers Confidence Gate / Adjudication downstream
+        if local_res.top2_scores and len(local_res.top2_scores) >= 2:
+            sorted_scores = sorted(local_res.top2_scores.values(), reverse=True)
+            if (sorted_scores[0] - sorted_scores[1]) < 0.15:
+                local_res.verification_status = VerificationStatus.DIRECT_NLI
+                local_res.adjudication_trigger = AdjudicationTrigger.NLI_CLOSE_TOP2
+                return local_res
+
+        if local_res.nli_confidence is not None and local_res.nli_confidence < 0.75:
+            local_res.verification_status = VerificationStatus.DIRECT_NLI
+            local_res.adjudication_trigger = AdjudicationTrigger.NLI_LOW_CONFIDENCE
+            return local_res
+
+        # -------------------------------------------------------------
+        # STEP 2: HIGH-SEVERITY PATH -> GEMINI SEMANTIC VERIFIER
         # -------------------------------------------------------------
         if is_high_severity and self._gemini_verifier is not None:
             try:
@@ -119,6 +141,8 @@ class HighSeverityHybridVerifier(NLIVerifier):
                     verification_status=VerificationStatus.DIRECT_NLI,
                     adjudication_trigger=AdjudicationTrigger.NONE,
                     uncertainty_reason=UncertaintyReason.NONE,
+                    adjudicator_model=res.model,
+                    adjudicator_confidence=res.confidence,
                 )
             except Exception as e:
                 logger.error(f"Gemini invocation threw exception: {e}")
@@ -131,19 +155,5 @@ class HighSeverityHybridVerifier(NLIVerifier):
                     adjudication_trigger=AdjudicationTrigger.HIGH_SEVERITY_MARGINAL_NLI,
                     uncertainty_reason=UncertaintyReason.JUDGE_LOW_CONFIDENCE,
                 )
-
-        # -------------------------------------------------------------
-        # LOW / MEDIUM RISK PATH -> LOCAL SEMANTIC VERIFIER
-        # -------------------------------------------------------------
-        local_res = self.local_verifier.verify(claim, evidence)
-
-        # Ambiguity check on local path
-        if local_res.label != "INSUFFICIENT_EVIDENCE":
-            if local_res.nli_confidence is not None and local_res.nli_confidence < 0.75:
-                local_res.adjudication_trigger = AdjudicationTrigger.NLI_LOW_CONFIDENCE
-            elif local_res.top2_scores and len(local_res.top2_scores) >= 2:
-                sorted_scores = sorted(local_res.top2_scores.values(), reverse=True)
-                if (sorted_scores[0] - sorted_scores[1]) < 0.15:
-                    local_res.adjudication_trigger = AdjudicationTrigger.NLI_CLOSE_TOP2
 
         return local_res

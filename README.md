@@ -94,7 +94,7 @@ User / Application Request
 ├── frontend/                     # React 19 + TypeScript + Vite UI Dashboard
 │   └── src/                      # Live Request Trace & Control Room Views
 ├── scripts/                      # Evaluation, Verification & Benchmarking Scripts
-└── tests/                        # 130 Regression & Safety Integration Tests
+└── tests/                        # 143 Regression & Safety Integration Tests
 ```
 
 ---
@@ -162,7 +162,7 @@ Open **http://localhost:5173** in your browser.
 
 ## 7. Running Tests & Benchmarks
 
-### Run Complete Test Suite (130 Tests)
+### Run Complete Test Suite (143 Tests)
 ```bash
 python -m pytest
 ```

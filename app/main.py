@@ -17,6 +17,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     settings = get_settings()
     if settings.debug:
         print(f"Starting {settings.app_name} v{settings.app_version} [{settings.app_env}]")
+    try:
+        from app.persistence.database import init_db
+        await init_db()
+    except Exception as e:
+        if settings.debug:
+            print(f"Database init info: {e}")
     yield
     if settings.debug:
         print(f"Shutting down {settings.app_name}")

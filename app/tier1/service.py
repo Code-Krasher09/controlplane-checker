@@ -109,6 +109,9 @@ class Tier1Service:
             claim.uncertainty_reason = nli_res.uncertainty_reason
             claim.final_label = nli_res.label if nli_res.verification_status != VerificationStatus.ADJUDICATION_INCONCLUSIVE else None
             claim.evidence_quality = best_quality
+            if hasattr(nli_res, "adjudicator_model") and nli_res.adjudicator_model:
+                claim.adjudicator_model = nli_res.adjudicator_model
+                claim.adjudicator_confidence = getattr(nli_res, "adjudicator_confidence", nli_res.nli_confidence)
 
             verified_claims.append(claim)
             claim_evidence_pairs.append((claim, evaluated_evidence))

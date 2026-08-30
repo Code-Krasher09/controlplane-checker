@@ -117,10 +117,17 @@ def get_sync_session(settings: Settings | None = None) -> Generator[Session, Non
 
 
 async def init_db(engine: AsyncEngine | None = None) -> None:
-    """Create all schema tables directly (for testing / development)."""
+    """Create all schema tables directly and seed default applications."""
     eng = engine or get_async_engine()
     async with eng.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    try:
+        session_factory = get_async_sessionmaker()
+        async with session_factory() as session:
+            from .seed import seed_database_async
+            await seed_database_async(session)
+    except Exception:
+        pass
 
 
 async def drop_db(engine: AsyncEngine | None = None) -> None:

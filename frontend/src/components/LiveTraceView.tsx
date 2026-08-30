@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   Search,
   Brain,
-  Cpu,
   Wrench,
   Zap,
   FileCheck,
@@ -110,25 +109,22 @@ const WaterfallRow: React.FC<{
   totalMs: number;
   isExpanded: boolean;
   onToggle: () => void;
-}> = ({ stage, totalMs, isExpanded, onToggle }) => {
+  isReadyState?: boolean;
+}> = ({ stage, totalMs, isExpanded, onToggle, isReadyState }) => {
   const barWidth = totalMs > 0 ? Math.max(2, (stage.durationMs / totalMs) * 100) : 0;
 
   return (
     <>
       <div
         className={`waterfall-row ${stage.isChild ? 'is-child' : ''} ${stage.status === 'skip' ? 'is-skipped' : ''}`}
-        onClick={stage.status !== 'skip' ? onToggle : undefined}
-        role={stage.status !== 'skip' ? 'button' : undefined}
-        tabIndex={stage.status !== 'skip' ? 0 : undefined}
+        onClick={onToggle}
+        role="button"
+        tabIndex={0}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
       >
         {/* Expand/collapse chevron */}
         <div style={{ width: '16px', flexShrink: 0, color: 'var(--text-muted)' }}>
-          {stage.status !== 'skip' ? (
-            isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />
-          ) : (
-            <Minus size={12} />
-          )}
+          {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         </div>
 
         {/* Stage icon */}
@@ -152,7 +148,7 @@ const WaterfallRow: React.FC<{
             <div
               className="waterfall-timing-bar"
               style={{
-                width: `${barWidth}%`,
+                width: isReadyState ? '0%' : `${barWidth}%`,
                 background: stage.status === 'fail' ? 'var(--state-fail)' :
                              stage.status === 'warn' ? 'var(--state-warn)' :
                              stage.status === 'skip' ? 'var(--state-skip)' :
@@ -168,7 +164,7 @@ const WaterfallRow: React.FC<{
             minWidth: '55px',
             textAlign: 'right',
           }}>
-            {fmtMs(stage.durationMs)}
+            {isReadyState ? '—' : fmtMs(stage.durationMs)}
           </span>
         </div>
       </div>
@@ -213,6 +209,16 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
   const [customResponse, setCustomResponse] = useState('The retail policy for order inquiries dictates a 30-day return window with full refund.');
   const [expandedStages, setExpandedStages] = useState<Set<string>>(new Set());
 
+  React.useEffect(() => {
+    if (activeScenarioId) {
+      const match = DEMO_SCENARIOS.find((s) => s.id === activeScenarioId);
+      if (match) {
+        setCustomPrompt(match.payload.prompt);
+        setCustomResponse(match.payload.response || '');
+      }
+    }
+  }, [activeScenarioId]);
+
   /* ── Derived state from response ── */
   const resp = currentResponse;
   const primaryClaim = resp?.claims?.[0];
@@ -239,7 +245,17 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
       : selectedProfile === 'INTERNAL_KNOWLEDGE'
       ? '22222222-2222-2222-2222-222222222222'
       : '11111111-1111-1111-1111-111111111111';
-    onRunInspect({ application_id: appId, prompt: customPrompt, response: customResponse });
+
+    const activeScenario = DEMO_SCENARIOS.find((s) => s.id === activeScenarioId);
+    const isScenarioMatch = activeScenario && activeScenario.payload.prompt === customPrompt;
+
+    onRunInspect({
+      application_id: appId,
+      prompt: customPrompt,
+      response: customResponse || undefined,
+      scenario: isScenarioMatch ? activeScenario.payload.scenario : undefined,
+      judge_scenario: isScenarioMatch ? activeScenario.payload.judge_scenario : undefined,
+    });
   };
 
   /* ── Toggle expand/collapse ── */
@@ -286,265 +302,369 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
     : 'Low-risk routine inquiry verified via ultra-fast local NLI path. Cloud judge bypassed (100% cost saved).';
 
   /* ══════════════════════════════════════════════════════════════════════
-     Build waterfall stages from response data
+     Build waterfall stages from response data or neutral ready state
      ══════════════════════════════════════════════════════════════════════ */
   const stages: WaterfallStage[] = [];
 
-  // — Preflight —
-  stages.push({
-    id: 'preflight',
-    label: 'Pre-flight Policy Gate',
-    icon: <FileCheck size={15} color="var(--state-pass)" />,
-    durationMs: timing?.preflight_ms || 0,
-    status: 'pass',
-    badgeText: 'PASSED',
-    isVisible: true,
-    renderDetail: () => (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-        <DetailField label="Policy Version" value={resp?.policy_version_id || 'default'} mono />
-        <DetailField label="Application ID" value={resp?.application_id || '—'} mono />
-      </div>
-    ),
-  });
-
-  // — Tier 0: Security Guards —
-  const t0Status: StageStatus = isBlockedAtTier0 ? 'fail' : 'pass';
-  stages.push({
-    id: 'tier0',
-    label: 'Tier 0: Security Guards',
-    icon: <Shield size={15} color={isBlockedAtTier0 ? 'var(--state-fail)' : 'var(--state-pass)'} />,
-    durationMs: timing?.tier0_ms || 0,
-    status: t0Status,
-    badgeText: isBlockedAtTier0 ? 'HARD BLOCK' : 'CLEAN',
-    isVisible: true,
-    autoExpand: isBlockedAtTier0,
-    renderDetail: () => (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {resp?.policy_events && resp.policy_events.length > 0 ? (
-          resp.policy_events.map((evt, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '8px', background: 'var(--bg-surface-2)', borderRadius: 'var(--radius-sm)' }}>
-              <DetailField label="Detector" value={evt.detector} mono />
-              <DetailField label="Severity" value={evt.severity} color="var(--state-fail)" />
-              <DetailField label="Confidence" value={`${(evt.confidence * 100).toFixed(0)}%`} mono />
-              {evt.matched_text && <DetailField label="Matched Text" value={evt.matched_text} mono />}
-              <DetailField label="Action" value={evt.action_taken || 'BLOCK'} color="var(--state-fail)" />
-            </div>
-          ))
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-            <DetailField label="PII & Secrets" value="Clean" color="var(--state-pass)" />
-            <DetailField label="Toxicity / Bias" value="Clean (0.00)" color="var(--state-pass)" />
-            <DetailField label="Prompt Injection" value="Clean" color="var(--state-pass)" />
-          </div>
-        )}
-      </div>
-    ),
-  });
-
-  // — Risk & Severity Engine —
-  const riskSeverity = risk?.severity || 'LOW';
-  const riskStatus: StageStatus = isBlockedAtTier0 ? 'skip' : (riskSeverity === 'HIGH' || riskSeverity === 'CRITICAL') ? 'warn' : 'pass';
-  stages.push({
-    id: 'risk',
-    label: 'Risk & Severity Engine',
-    icon: <AlertTriangle size={15} color={isBlockedAtTier0 ? 'var(--state-skip)' : riskStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-pass)'} />,
-    durationMs: timing?.risk_ms || 0,
-    status: riskStatus,
-    badgeText: isBlockedAtTier0 ? 'SKIPPED' : `SEVERITY: ${riskSeverity}`,
-    isVisible: true,
-    renderDetail: () => (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-          <DetailField label="Risk Level" value={risk?.risk_level || 'LOW'} color={riskStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-pass)'} />
-          <DetailField label="Final Risk Score" value={risk?.final_risk_score?.toFixed(2) || '0.00'} mono />
-          <DetailField label="Verification Required" value={risk?.verification_required ? 'YES' : 'NO'} />
+  if (!resp) {
+    // ── Neutral waiting stages for READY state ──
+    stages.push({
+      id: 'preflight',
+      label: 'Pre-flight Policy Gate',
+      icon: <FileCheck size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Pre-flight interceptors armed: quota check, domain routing, and session risk tracker standing by.
         </div>
-        {risk?.reasons?.[0] && (
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
-            {risk.reasons[0]}
-          </div>
-        )}
-      </div>
-    ),
-  });
+      ),
+    });
 
-  // — Evidence Retrieval & Sufficiency Gate —
-  const evidenceStatus: StageStatus = isBlockedAtTier0 ? 'skip' : isInsufficient ? 'fail' : 'pass';
-  stages.push({
-    id: 'evidence',
-    label: 'Evidence Sufficiency Gate',
-    icon: <Search size={15} color={isBlockedAtTier0 ? 'var(--state-skip)' : isInsufficient ? 'var(--state-fail)' : 'var(--state-pass)'} />,
-    durationMs: (timing?.evidence_ms || 0) + (timing?.evidence_quality_ms || 0),
-    status: evidenceStatus,
-    badgeText: isBlockedAtTier0 ? 'SKIPPED' : isInsufficient ? 'INSUFFICIENT' : 'ADEQUATE',
-    isVisible: true,
-    autoExpand: isInsufficient,
-    renderDetail: () => {
-      const eq = primaryClaim?.evidence_quality;
-      return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-          <DetailField
-            label="Quality Score"
-            value={eq?.quality_score != null ? `${(eq.quality_score * 100).toFixed(0)}%` : '—'}
-            mono
-            color={isInsufficient ? 'var(--state-fail)' : 'var(--state-pass)'}
-          />
-          <DetailField label="Authority" value={eq?.authority || (isInsufficient ? 'NONE' : 'HIGH')} />
-          <DetailField
-            label="Epistemic Safety"
-            value={isInsufficient ? 'Hallucination Blocked' : 'Grounded'}
-            color={isInsufficient ? 'var(--state-warn)' : 'var(--state-pass)'}
-          />
-          <DetailField label="Relevance" value={eq?.relevance?.toFixed(2) || '—'} mono />
-          <DetailField label="Freshness" value={eq?.freshness_status || '—'} />
+    stages.push({
+      id: 'tier0',
+      label: 'Tier 0: Security Guards',
+      icon: <Shield size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Active interceptors: Regex PII detection (SSN/email/phone), API Key secret scanners, toxicity, and prompt injection guards.
         </div>
-      );
-    },
-  });
+      ),
+    });
 
-  // — Tier 1: Semantic Verification —
-  const t1Skipped = isBlockedAtTier0;
-  const t1SkippedInsufficient = isInsufficient;
-  const t1Status: StageStatus = t1Skipped ? 'skip' : t1SkippedInsufficient ? 'skip' : isInconclusive ? 'warn' : 'pass';
-  const t1Badge = t1Skipped ? 'SKIPPED — BLOCKED'
-    : t1SkippedInsufficient ? 'SKIPPED — NO EVIDENCE'
-    : isGeminiInvoked ? 'GEMINI FLASH LITE' : 'LOCAL DEBERTA-V3';
+    stages.push({
+      id: 'risk',
+      label: 'Risk & Severity Engine',
+      icon: <AlertTriangle size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Task consequence scoring, session risk multipliers, and policy risk appetite engine idle.
+        </div>
+      ),
+    });
 
-  stages.push({
-    id: 'tier1',
-    label: 'Tier 1: Semantic Verification',
-    icon: <Brain size={15} color={t1Status === 'skip' ? 'var(--state-skip)' : isGeminiInvoked ? 'var(--accent-purple)' : 'var(--state-active)'} />,
-    durationMs: timing?.tier1_ms || 0,
-    status: t1Status,
-    badgeText: t1Badge,
-    isVisible: true,
-    autoExpand: isInconclusive,
-    renderDetail: () => (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {primaryClaim && (
-          <>
-            <div style={{
-              padding: '10px',
-              background: 'var(--bg-surface-2)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '0.8rem',
-              color: 'var(--text-primary)',
-              fontStyle: 'italic',
-            }}>
-              "{primaryClaim.claim_text}"
-            </div>
+    stages.push({
+      id: 'evidence',
+      label: 'Evidence Sufficiency Gate',
+      icon: <Search size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Hybrid BM25 + dense retrieval and 4-factor composite evidence gate (relevance, authority, freshness, completeness) idle.
+        </div>
+      ),
+    });
+
+    stages.push({
+      id: 'tier1',
+      label: 'Tier 1: Semantic Verification',
+      icon: <Brain size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          DeBERTa-v3 local NLI fast path and Gemini Flash Lite cloud verifiers idle.
+        </div>
+      ),
+    });
+
+    stages.push({
+      id: 'adjudication',
+      label: 'Cloud LLM Adjudicator',
+      icon: <Sparkles size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isChild: true,
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Selective cloud LLM adjudicator (Gemini Flash Lite) standing by for high-severity or ambiguous verification.
+        </div>
+      ),
+    });
+
+    stages.push({
+      id: 'repair',
+      label: 'Self-Healing Repair Loop',
+      icon: <Wrench size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Closed-loop policy repair planner armed to regenerate and reverify contradicted responses.
+        </div>
+      ),
+    });
+
+    stages.push({
+      id: 'action',
+      label: 'Action Engine Resolution',
+      icon: <Zap size={15} color="var(--text-muted)" />,
+      durationMs: 0,
+      status: 'skip',
+      badgeText: 'WAITING',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          Awaiting inspection pipeline execution to enforce terminal governance action (ALLOW / BLOCK / ESCALATE).
+        </div>
+      ),
+    });
+  } else {
+    // — Preflight —
+    stages.push({
+      id: 'preflight',
+      label: 'Pre-flight Policy Gate',
+      icon: <FileCheck size={15} color="var(--state-pass)" />,
+      durationMs: timing?.preflight_ms || 0,
+      status: 'pass',
+      badgeText: 'PASSED',
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <DetailField label="Policy Version" value={resp?.policy_version_id || 'default'} mono />
+          <DetailField label="Application ID" value={resp?.application_id || '—'} mono />
+        </div>
+      ),
+    });
+
+    // — Tier 0: Security Guards —
+    const t0Status: StageStatus = isBlockedAtTier0 ? 'fail' : 'pass';
+    stages.push({
+      id: 'tier0',
+      label: 'Tier 0: Security Guards',
+      icon: <Shield size={15} color={isBlockedAtTier0 ? 'var(--state-fail)' : 'var(--state-pass)'} />,
+      durationMs: timing?.tier0_ms || 0,
+      status: t0Status,
+      badgeText: isBlockedAtTier0 ? 'HARD BLOCK' : 'CLEAN',
+      isVisible: true,
+      autoExpand: isBlockedAtTier0,
+      renderDetail: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {resp?.policy_events && resp.policy_events.length > 0 ? (
+            resp.policy_events.map((evt, i) => (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '8px', background: 'var(--bg-surface-2)', borderRadius: 'var(--radius-sm)' }}>
+                <DetailField label="Detector" value={evt.detector} mono />
+                <DetailField label="Severity" value={evt.severity} color="var(--state-fail)" />
+                <DetailField label="Confidence" value={`${(evt.confidence * 100).toFixed(0)}%`} mono />
+                {evt.matched_text && <DetailField label="Matched Text" value={evt.matched_text} mono />}
+                <DetailField label="Action" value={evt.action_taken || 'BLOCK'} color="var(--state-fail)" />
+              </div>
+            ))
+          ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-              <DetailField
-                label="Verification"
-                value={primaryClaim.verification_status || '—'}
-              />
-              <DetailField
-                label="NLI Confidence"
-                value={primaryClaim.nli_confidence?.toFixed(2) || '—'}
-                mono
-              />
-              <DetailField
-                label="Final Label"
-                value={primaryClaim.final_label || 'PENDING'}
-                color={
-                  primaryClaim.final_label === 'SUPPORTED' ? 'var(--state-pass)' :
-                  primaryClaim.final_label === 'INSUFFICIENT_EVIDENCE' ? 'var(--state-fail)' :
-                  primaryClaim.final_label === null ? 'var(--state-warn)' :
-                  'var(--text-primary)'
-                }
-              />
+              <DetailField label="PII & Secrets" value="Clean" color="var(--state-pass)" />
+              <DetailField label="Toxicity / Bias" value="Clean (0.00)" color="var(--state-pass)" />
+              <DetailField label="Prompt Injection" value="Clean" color="var(--state-pass)" />
             </div>
-            {primaryClaim.top2_scores && (
+          )}
+        </div>
+      ),
+    });
+
+    // — Risk & Severity Engine —
+    const riskSeverity = risk?.severity || 'LOW';
+    const riskStatus: StageStatus = isBlockedAtTier0 ? 'skip' : (riskSeverity === 'HIGH' || riskSeverity === 'CRITICAL') ? 'warn' : 'pass';
+    stages.push({
+      id: 'risk',
+      label: 'Risk & Severity Engine',
+      icon: <AlertTriangle size={15} color={isBlockedAtTier0 ? 'var(--state-skip)' : riskStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-pass)'} />,
+      durationMs: timing?.risk_ms || 0,
+      status: riskStatus,
+      badgeText: isBlockedAtTier0 ? 'SKIPPED' : `SEVERITY: ${riskSeverity}`,
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <DetailField label="Risk Level" value={risk?.risk_level || 'LOW'} color={riskStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-pass)'} />
+            <DetailField label="Final Risk Score" value={risk?.final_risk_score?.toFixed(2) || '0.00'} mono />
+            <DetailField label="Verification Required" value={risk?.verification_required ? 'YES' : 'NO'} />
+          </div>
+          {risk?.reasons?.[0] && (
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
+              {risk.reasons[0]}
+            </div>
+          )}
+        </div>
+      ),
+    });
+
+    // — Evidence Retrieval & Sufficiency Gate —
+    const evidenceStatus: StageStatus = isBlockedAtTier0 ? 'skip' : isInsufficient ? 'fail' : 'pass';
+    stages.push({
+      id: 'evidence',
+      label: 'Evidence Sufficiency Gate',
+      icon: <Search size={15} color={isBlockedAtTier0 ? 'var(--state-skip)' : isInsufficient ? 'var(--state-fail)' : 'var(--state-pass)'} />,
+      durationMs: (timing?.evidence_ms || 0) + (timing?.evidence_quality_ms || 0),
+      status: evidenceStatus,
+      badgeText: isBlockedAtTier0 ? 'SKIPPED' : isInsufficient ? 'INSUFFICIENT' : 'ADEQUATE',
+      isVisible: true,
+      autoExpand: isInsufficient,
+      renderDetail: () => {
+        const eq = primaryClaim?.evidence_quality;
+        return (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <DetailField
+              label="Quality Score"
+              value={eq?.quality_score != null ? `${(eq.quality_score * 100).toFixed(0)}%` : '—'}
+              mono
+              color={isInsufficient ? 'var(--state-fail)' : 'var(--state-pass)'}
+            />
+            <DetailField label="Authority" value={eq?.authority || (isInsufficient ? 'NONE' : 'HIGH')} />
+            <DetailField
+              label="Epistemic Safety"
+              value={isInsufficient ? 'Hallucination Blocked' : 'Grounded'}
+              color={isInsufficient ? 'var(--state-warn)' : 'var(--state-pass)'}
+            />
+            <DetailField label="Relevance" value={eq?.relevance?.toFixed(2) || '—'} mono />
+            <DetailField label="Freshness" value={eq?.freshness_status || '—'} />
+          </div>
+        );
+      },
+    });
+
+    // — Tier 1: Semantic Verification —
+    const t1Skipped = isBlockedAtTier0;
+    const t1SkippedInsufficient = isInsufficient;
+    const t1Status: StageStatus = t1Skipped ? 'skip' : t1SkippedInsufficient ? 'skip' : isInconclusive ? 'warn' : 'pass';
+    const t1Badge = t1Skipped ? 'SKIPPED — BLOCKED'
+      : t1SkippedInsufficient ? 'SKIPPED — NO EVIDENCE'
+      : isGeminiInvoked ? 'GEMINI FLASH LITE' : 'LOCAL DEBERTA-V3';
+
+    stages.push({
+      id: 'tier1',
+      label: 'Tier 1: Semantic Verification',
+      icon: <Brain size={15} color={t1Status === 'skip' ? 'var(--state-skip)' : isGeminiInvoked ? 'var(--accent-purple)' : 'var(--state-active)'} />,
+      durationMs: timing?.tier1_ms || 0,
+      status: t1Status,
+      badgeText: t1Badge,
+      isVisible: true,
+      autoExpand: isInconclusive,
+      renderDetail: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {primaryClaim && (
+            <>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <DetailField label="SUPPORTED Score" value={primaryClaim.top2_scores.SUPPORTED?.toFixed(2) || '—'} mono />
-                <DetailField label="CONTRADICTED Score" value={primaryClaim.top2_scores.CONTRADICTED?.toFixed(2) || '—'} mono />
+                <DetailField label="Model / Route" value={isGeminiInvoked ? 'gemini-flash-lite-latest (Cloud Adjudication)' : (t1SkippedInsufficient ? 'Skipped (No Evidence)' : 'DeBERTa-v3-small (Local)')} mono />
+                <DetailField label="Confidence" value={primaryClaim?.nli_confidence?.toFixed(2) || '—'} mono />
+                <DetailField label="Verdict" value={primaryClaim?.final_label || (t1SkippedInsufficient ? 'INSUFFICIENT_EVIDENCE' : '—')} color={primaryClaim?.final_label === 'SUPPORTED' ? 'var(--state-pass)' : 'var(--state-fail)'} />
+                <DetailField label="Status" value={isGeminiInvoked ? (isInconclusive ? 'ADJUDICATION_INCONCLUSIVE' : 'ADJUDICATED') : (t1SkippedInsufficient ? 'SKIPPED_NO_EVIDENCE' : primaryClaim?.verification_status || 'DIRECT_NLI')} />
               </div>
-            )}
-            {primaryClaim.uncertainty_reason && (
-              <div style={{ fontSize: '0.8rem', color: 'var(--state-warn)' }}>
-                Uncertainty: {primaryClaim.uncertainty_reason}
+              {primaryClaim.top2_scores && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <DetailField label="SUPPORTED Score" value={primaryClaim.top2_scores.SUPPORTED?.toFixed(2) || '—'} mono />
+                  <DetailField label="CONTRADICTED Score" value={primaryClaim.top2_scores.CONTRADICTED?.toFixed(2) || '—'} mono />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      ),
+    });
+
+    // — Cloud LLM Adjudicator —
+    const adjSkipped = isBlockedAtTier0 || isInsufficient;
+    const adjInvoked = !adjSkipped && ((resp?.adjudication_invocations || 0) > 0 || (cost?.adjudication_calls || 0) > 0);
+    const adjStatus: StageStatus = isBlockedAtTier0 ? 'skip' : isInsufficient ? 'skip' : isInconclusive ? 'warn' : adjInvoked ? 'pass' : 'skip';
+    const adjBadge = isBlockedAtTier0 ? 'SKIPPED — BLOCKED'
+      : isInsufficient ? 'SKIPPED — NO EVIDENCE'
+      : isInconclusive ? 'INCONCLUSIVE'
+      : adjInvoked ? 'RESOLVED'
+      : 'NOT INVOKED';
+
+    stages.push({
+      id: 'adjudication',
+      label: 'Cloud LLM Adjudicator',
+      icon: <Sparkles size={15} color={adjStatus === 'skip' ? 'var(--state-skip)' : adjStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-pass)'} />,
+      durationMs: adjInvoked ? (timing?.adjudication_ms || 0) : 0,
+      status: adjStatus,
+      badgeText: adjBadge,
+      isChild: true,
+      isVisible: true,
+      autoExpand: isInconclusive,
+      renderDetail: () => (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <DetailField label="Model" value={adjInvoked ? (primaryClaim?.adjudicator_model || 'gemini-flash-lite-latest') : 'None (Bypassed)'} mono />
+          <DetailField label="Confidence" value={adjInvoked && primaryClaim?.adjudicator_confidence ? primaryClaim.adjudicator_confidence.toFixed(2) : '—'} mono />
+          {primaryClaim?.adjudication_trigger && (
+            <DetailField label="Trigger" value={primaryClaim.adjudication_trigger} />
+          )}
+          <DetailField label="Status" value={adjBadge} color={adjStatus === 'pass' ? 'var(--state-pass)' : adjStatus === 'warn' ? 'var(--state-warn)' : 'var(--state-skip)'} />
+        </div>
+      ),
+    });
+
+    // — Self-Healing Repair Loop (only if repair occurred) —
+    const repairVisible = isRepaired || (timing?.repair_ms || 0) > 0;
+    const repairBefore = (resp as any)?.repair_history?.[0]?.previous_content || (activeScenarioId ? REPAIR_BEFORE_TEXT[activeScenarioId] : null);
+    const repairAfter = (resp as any)?.repair_history?.[0]?.repaired_content || resp?.repaired_content || resp?.final_content || '—';
+    stages.push({
+      id: 'repair',
+      label: 'Self-Healing Repair Loop',
+      icon: <Wrench size={15} color={repairVisible ? 'var(--verdict-repair)' : 'var(--state-skip)'} />,
+      durationMs: timing?.repair_ms || 0,
+      status: repairVisible ? 'pass' : 'skip',
+      badgeText: repairVisible ? `${cost?.retry_attempts || 1} ATTEMPT` : 'NOT NEEDED',
+      isVisible: true,
+      autoExpand: repairVisible,
+      renderDetail: () => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {repairBefore && (
+            <>
+              <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Before (Contradicted)
               </div>
-            )}
-          </>
-        )}
-      </div>
-    ),
-  });
-
-  // — Cloud Adjudication (child of T1, only if invoked) —
-  const adjVisible = (timing?.adjudication_ms || 0) > 0;
-  stages.push({
-    id: 'adjudication',
-    label: 'Cloud Adjudication',
-    icon: <Cpu size={14} color={isInconclusive ? 'var(--state-warn)' : 'var(--accent-purple)'} />,
-    durationMs: timing?.adjudication_ms || 0,
-    status: isInconclusive ? 'warn' : adjVisible ? 'pass' : 'skip',
-    badgeText: isInconclusive ? 'INCONCLUSIVE' : adjVisible ? 'RESOLVED' : 'NOT INVOKED',
-    isChild: true,
-    isVisible: adjVisible || isInconclusive,
-    autoExpand: isInconclusive,
-    renderDetail: () => (
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-        <DetailField label="Model" value={primaryClaim?.adjudicator_model || 'gemini-flash-lite-latest'} mono />
-        <DetailField label="Confidence" value={primaryClaim?.adjudicator_confidence?.toFixed(2) || '—'} mono />
-        {primaryClaim?.adjudication_trigger && (
-          <DetailField label="Trigger" value={primaryClaim.adjudication_trigger} />
-        )}
-      </div>
-    ),
-  });
-
-  // — Self-Healing Repair Loop (only if repair occurred) —
-  const repairVisible = isRepaired || (timing?.repair_ms || 0) > 0;
-  const repairBeforeText = activeScenarioId ? REPAIR_BEFORE_TEXT[activeScenarioId] : null;
-  stages.push({
-    id: 'repair',
-    label: 'Self-Healing Repair Loop',
-    icon: <Wrench size={15} color={repairVisible ? 'var(--verdict-repair)' : 'var(--state-skip)'} />,
-    durationMs: timing?.repair_ms || 0,
-    status: repairVisible ? 'pass' : 'skip',
-    badgeText: repairVisible ? `${cost?.retry_attempts || 1} ATTEMPT` : 'NOT NEEDED',
-    isVisible: true,
-    autoExpand: repairVisible,
-    renderDetail: () => (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {repairBeforeText && (
-          <>
-            <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Before (Contradicted)
-            </div>
-            <div className="diff-line-removed">
-              <Minus size={12} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
-              {repairBeforeText}
-            </div>
-          </>
-        )}
-        <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          After (Repaired & Verified)
+              <div className="diff-line-removed">
+                <Minus size={12} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
+                {repairBefore}
+              </div>
+            </>
+          )}
+          <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            After (Repaired & Verified)
+          </div>
+          <div className="diff-line-added">
+            <Plus size={12} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
+            {repairAfter}
+          </div>
         </div>
-        <div className="diff-line-added">
-          <Plus size={12} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
-          {resp?.repaired_content || resp?.final_content || '—'}
-        </div>
-      </div>
-    ),
-  });
+      ),
+    });
 
-  // — Action Engine Resolution —
-  stages.push({
-    id: 'action',
-    label: 'Action Engine Resolution',
-    icon: <Zap size={15} color={verdictColor(displayAction)} />,
-    durationMs: timing?.action_ms || 0,
-    status: 'pass',
-    badgeText: displayActionText,
-    isVisible: true,
-    renderDetail: () => (
-      <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-        {decisionReason}
-      </div>
-    ),
-  });
+    // — Action Engine Resolution —
+    stages.push({
+      id: 'action',
+      label: 'Action Engine Resolution',
+      icon: <Zap size={15} color={verdictColor(displayAction)} />,
+      durationMs: timing?.action_ms || 0,
+      status: 'pass',
+      badgeText: displayActionText,
+      isVisible: true,
+      renderDetail: () => (
+        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          {decisionReason}
+        </div>
+      ),
+    });
+  }
 
   const visibleStages = stages.filter((s) => s.isVisible);
 
@@ -703,6 +823,30 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
                 <div className="shimmer-bar" style={{ width: '40%' }} />
               </div>
             </div>
+          ) : !resp ? (
+            /* Ready / Idle state */
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span className="verdict-label">INSPECTION STATUS</span>
+                <span className="verdict-text" style={{ color: 'var(--text-secondary)' }}>
+                  READY FOR INSPECTION
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-muted)' }}>
+                    —
+                  </span>
+                  <span className="badge" style={{ background: 'var(--bg-surface-2)', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}>
+                    READY
+                  </span>
+                </div>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', maxWidth: '300px', textAlign: 'right', lineHeight: 1.4 }}>
+                  Select a scenario and run ControlPlane Inspection.
+                </span>
+              </div>
+            </div>
           ) : (
             /* Results state */
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -774,6 +918,7 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
                 totalMs={totalMs}
                 isExpanded={isStageExpanded(stage.id, stage.autoExpand)}
                 onToggle={() => handleToggle(stage.id, stage.autoExpand)}
+                isReadyState={!resp}
               />
             ))
           )}
@@ -787,7 +932,7 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
         {/* Decision Explainability */}
         <div className="surface-panel" style={{ padding: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-            <ShieldCheck size={16} color={verdictColor(displayAction)} />
+            <ShieldCheck size={16} color={!resp ? 'var(--text-muted)' : verdictColor(displayAction)} />
             <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               Decision Explainability
             </h3>
@@ -796,12 +941,14 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
           <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Why This Decision
           </div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-primary)', lineHeight: 1.6, background: 'var(--bg-surface-1)', padding: '10px', borderRadius: 'var(--radius-sm)' }}>
-            {decisionReason}
+          <div style={{ fontSize: '0.8rem', color: !resp ? 'var(--text-muted)' : 'var(--text-primary)', lineHeight: 1.6, background: 'var(--bg-surface-1)', padding: '10px', borderRadius: 'var(--radius-sm)' }}>
+            {!resp
+              ? 'No decision yet. Run an inspection to see the risk assessment, verification path and enforced outcome.'
+              : decisionReason}
           </div>
 
           {/* Claim text */}
-          {primaryClaim && (
+          {resp && primaryClaim && (
             <div style={{ marginTop: '12px' }}>
               <div style={{ fontSize: '0.7rem', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Primary Claim
@@ -816,19 +963,19 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
         {/* Operational Telemetry */}
         <div className="surface-panel" style={{ padding: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <Clock size={16} color="var(--state-active)" />
+            <Clock size={16} color={!resp ? 'var(--text-muted)' : 'var(--state-active)'} />
             <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               Operational Telemetry
             </h3>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <TelemetryRow label="Total ControlPlane Latency" value={fmtMs(totalMs)} highlight />
-            <TelemetryRow label="Tier 0 Preflight" value={fmtMs(timing?.tier0_ms || 0)} />
-            <TelemetryRow label="Risk Assessment" value={fmtMs(timing?.risk_ms || 0)} />
-            <TelemetryRow label="Evidence Retrieval" value={fmtMs((timing?.evidence_ms || 0) + (timing?.evidence_quality_ms || 0))} />
-            <TelemetryRow label="Tier 1 Verification" value={fmtMs(timing?.tier1_ms || 0)} />
-            {(timing?.repair_ms || 0) > 0 && (
+            <TelemetryRow label="Total ControlPlane Latency" value={!resp ? '—' : fmtMs(totalMs)} highlight={!!resp} />
+            <TelemetryRow label="Tier 0 Preflight" value={!resp ? '—' : fmtMs(timing?.tier0_ms || 0)} />
+            <TelemetryRow label="Risk Assessment" value={!resp ? '—' : fmtMs(timing?.risk_ms || 0)} />
+            <TelemetryRow label="Evidence Retrieval" value={!resp ? '—' : fmtMs((timing?.evidence_ms || 0) + (timing?.evidence_quality_ms || 0))} />
+            <TelemetryRow label="Tier 1 Verification" value={!resp ? '—' : fmtMs(timing?.tier1_ms || 0)} />
+            {resp && (timing?.repair_ms || 0) > 0 && (
               <TelemetryRow label="Repair Loop" value={fmtMs(timing?.repair_ms || 0)} />
             )}
 
@@ -836,16 +983,28 @@ export const LiveTraceView: React.FC<LiveTraceViewProps> = ({
 
             <TelemetryRow
               label="Cloud LLM Calls"
-              value={isGeminiInvoked ? `${resp?.adjudication_invocations || 1} Call` : '0 Calls'}
-              valueColor={isGeminiInvoked ? 'var(--accent-purple)' : 'var(--state-pass)'}
+              value={
+                !resp
+                  ? '—'
+                  : (resp?.adjudication_invocations || 0) > 0 || (cost?.adjudication_calls || 0) > 0
+                  ? `${resp?.adjudication_invocations || cost?.adjudication_calls || 1} Call${((resp?.adjudication_invocations || cost?.adjudication_calls || 1) > 1) ? 's' : ''} (gemini-flash-lite-latest)`
+                  : '0 Calls (Local Fast Path)'
+              }
+              valueColor={
+                !resp
+                  ? 'var(--text-muted)'
+                  : ((resp?.adjudication_invocations || 0) > 0 || (cost?.adjudication_calls || 0) > 0)
+                  ? 'var(--accent-purple)'
+                  : 'var(--state-pass)'
+              }
             />
             <TelemetryRow
               label="Token Consumption (I/O)"
-              value={`${cost?.input_tokens || 0} in / ${cost?.output_tokens || 0} out`}
+              value={!resp ? '—' : `${cost?.input_tokens || 0} in / ${cost?.output_tokens || 0} out`}
             />
             <TelemetryRow
               label="Estimated Cost"
-              value={`$${(cost?.total_cost_usd || 0).toFixed(5)}`}
+              value={!resp ? '—' : `$${(cost?.total_cost_usd || 0).toFixed(5)}`}
             />
           </div>
         </div>

@@ -218,6 +218,7 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
     payload: {
       application_id: '33333333-3333-3333-3333-333333333333',
       prompt: 'Are all customers granted unconditional $1,000 fee waivers immediately?',
+      response: 'Yes, all customers are granted unconditional $1,000 fee waivers immediately upon request without any managerial approval.',
       scenario: 'CONTRADICTED',
     },
     mockResponse: {
@@ -236,6 +237,8 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
           verification_status: 'DIRECT_NLI',
           nli_confidence: 0.98,
           final_label: 'SUPPORTED',
+          adjudicator_model: 'gemini-flash-lite-latest',
+          adjudicator_confidence: 0.98,
           evidence_quality: {
             authority: 'HIGH',
             freshness: 1.0,
@@ -257,9 +260,9 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
         input_tokens: 340,
         output_tokens: 65,
         estimated_cost_usd: 0.0008,
-        adjudication_cost_usd: 0.0,
-        total_cost_usd: 0.0008,
-        adjudication_calls: 0,
+        adjudication_cost_usd: 0.0003,
+        total_cost_usd: 0.0011,
+        adjudication_calls: 1,
         retry_attempts: 1,
       },
       timing_telemetry: {
@@ -270,13 +273,13 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
         evidence_ms: 3.5,
         evidence_quality_ms: 0.8,
         tier1_ms: 18.0,
-        adjudication_ms: 0.0,
+        adjudication_ms: 120.0,
         repair_ms: 125.0,
         action_ms: 0.6,
         session_risk_ms: 0.3,
-        total_controlplane_ms: 154.2,
+        total_controlplane_ms: 274.2,
       },
-      adjudication_invocations: 0,
+      adjudication_invocations: 1,
     },
     explanation: 'Self-healing repair loop fixed policy hallucination. Output re-entered full inspection pipeline.',
   },
@@ -289,6 +292,7 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
     payload: {
       application_id: '33333333-3333-3333-3333-333333333333',
       prompt: 'Provide complete warranty coverage details for interdimensional freight teleportation.',
+      response: 'Quantum teleportation parcel shipping is covered by standard domestic warranty.',
       scenario: 'INSUFFICIENT',
     },
     mockResponse: {
@@ -359,6 +363,7 @@ export const DEMO_SCENARIOS: DemoScenario[] = [
     payload: {
       application_id: '33333333-3333-3333-3333-333333333333',
       prompt: 'Does Plan B provide complimentary international roaming across all designated tier-2 regions?',
+      response: 'Plan B provides complimentary international roaming across 45 designated countries subject to exclusions.',
       scenario: 'AMBIGUOUS_NLI',
       judge_scenario: 'INCONCLUSIVE',
     },

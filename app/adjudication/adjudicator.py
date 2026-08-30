@@ -52,8 +52,40 @@ class MockAdjudicator(Adjudicator):
         selected_scenario = (scenario or "").upper()
         claim_upper = claim.claim_text.upper()
 
-        # Check explicit scenario or keyword heuristics
-        if selected_scenario == "INCONCLUSIVE" or "INCONCLUSIVE" in claim_upper or "EXCEPTION" in claim_upper:
+        # Check explicit scenario overrides first
+        if selected_scenario == "CONFIDENT_SUPPORTED":
+            return AdjudicationResponse(
+                verification_status=VerificationStatus.ADJUDICATED,
+                final_label="SUPPORTED",
+                adjudicator_model=self.model_name,
+                adjudicator_confidence=0.92,
+                uncertainty_reason=UncertaintyReason.NONE,
+                adjudication_invoked=True,
+                estimated_cost_usd=0.005,
+            )
+
+        if selected_scenario == "CONFIDENT_CONTRADICTED":
+            return AdjudicationResponse(
+                verification_status=VerificationStatus.ADJUDICATED,
+                final_label="CONTRADICTED",
+                adjudicator_model=self.model_name,
+                adjudicator_confidence=0.95,
+                uncertainty_reason=UncertaintyReason.NONE,
+                adjudication_invoked=True,
+                estimated_cost_usd=0.005,
+            )
+
+        # Keyword heuristics for ambiguous or contested boundaries
+        if (
+            selected_scenario == "INCONCLUSIVE"
+            or "INCONCLUSIVE" in claim_upper
+            or "EXCEPTION" in claim_upper
+            or "EXCLUSION" in claim_upper
+            or "EXCLUSIONS" in claim_upper
+            or "ROAMING" in claim_upper
+            or "PLAN B" in claim_upper
+            or "AMBIGUOUS" in claim_upper
+        ):
             # Judge cannot reach high confidence
             return AdjudicationResponse(
                 verification_status=VerificationStatus.ADJUDICATION_INCONCLUSIVE,
@@ -61,17 +93,6 @@ class MockAdjudicator(Adjudicator):
                 adjudicator_model=self.model_name,
                 adjudicator_confidence=0.48,
                 uncertainty_reason=UncertaintyReason.JUDGE_LOW_CONFIDENCE,
-                adjudication_invoked=True,
-                estimated_cost_usd=0.005,
-            )
-
-        if selected_scenario == "CONFIDENT_CONTRADICTED" or "CONTRADICT" in claim_upper or "UNAUTHORIZED" in claim_upper:
-            return AdjudicationResponse(
-                verification_status=VerificationStatus.ADJUDICATED,
-                final_label="CONTRADICTED",
-                adjudicator_model=self.model_name,
-                adjudicator_confidence=0.95,
-                uncertainty_reason=UncertaintyReason.NONE,
                 adjudication_invoked=True,
                 estimated_cost_usd=0.005,
             )

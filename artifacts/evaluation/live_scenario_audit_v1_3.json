@@ -1,0 +1,695 @@
+{
+  "1_SAFE_FAST_PATH": {
+    "status_code": 200,
+    "response": {
+      "request_id": "794a3548-00c0-4563-92a5-e7f6b0884d82",
+      "application_id": "11111111-1111-1111-1111-111111111111",
+      "policy_version_id": "11111111-0000-0000-0000-000000000001",
+      "action": "ALLOW",
+      "final_content": "The retail policy for order inquiries dictates a 30-day return window with full refund.",
+      "risk_assessment": {
+        "task_risk_score": 0.2,
+        "response_risk_score": 0.35,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 0.3,
+        "severity_score": 0.3,
+        "session_risk_score": 0.0,
+        "final_risk_score": 0.2525,
+        "risk_level": "LOW",
+        "severity": "LOW",
+        "highest_severity": "LOW",
+        "verification_required": false,
+        "risk_types": [],
+        "candidate_actions": [
+          "ALLOW"
+        ],
+        "reasons": [
+          "SAFE_FAST_PATH_ALLOWED"
+        ]
+      },
+      "policy_events": [],
+      "claims": [],
+      "repair_history": [],
+      "adjudication_invocations": 0,
+      "session_risk": {
+        "session_id": "794a3548-00c0-4563-92a5-e7f6b0884d82",
+        "prior_score": 0.0,
+        "current_score": 0.0,
+        "level": "NORMAL",
+        "turn_count": 1,
+        "violations_count": 0,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 0
+      },
+      "applied_policy": {
+        "application_id": "11111111-1111-1111-1111-111111111111",
+        "application_name": "Customer Support Assistant",
+        "policy_name": "Customer Support Default Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "MEDIUM",
+        "require_grounding": false,
+        "thresholds": {
+          "nli_confidence_threshold": 0.75,
+          "adjudication_confidence_threshold": 0.8,
+          "adjudication_budget_usd": 0.02,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.85,
+          "min_evidence_quality": 0.55,
+          "session_risk_elevated_threshold": 3.0,
+          "session_risk_strict_threshold": 7.0,
+          "max_consecutive_uncertainties": 3
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 15,
+        "output_tokens": 21,
+        "total_tokens": 36,
+        "total_latency_ms": 97,
+        "estimated_model_cost_usd": 1.5e-05,
+        "estimated_adjudication_cost_usd": 0.0,
+        "total_cost_usd": 1.5e-05,
+        "adjudication_calls": 0,
+        "repair_attempts": 0
+      },
+      "timing_telemetry": {
+        "preflight_ms": 6.74,
+        "model_ms": 0.0,
+        "tier0_ms": 0.06,
+        "risk_ms": 0.05,
+        "tier1_ms": 0.0,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 0.0,
+        "repair_ms": 0.0,
+        "action_ms": 0.01,
+        "session_risk_ms": 60.019999999999996,
+        "total_controlplane_ms": 97.91
+      }
+    }
+  },
+  "2_PII_THREAT_BLOCK": {
+    "status_code": 200,
+    "response": {
+      "request_id": "36cf358f-f5d4-4c90-b1a5-559af8d0774d",
+      "application_id": "11111111-1111-1111-1111-111111111111",
+      "policy_version_id": "11111111-0000-0000-0000-000000000001",
+      "action": "BLOCK",
+      "final_content": null,
+      "risk_assessment": {
+        "task_risk_score": 0.9,
+        "response_risk_score": 1.0,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 1.0,
+        "severity_score": 1.0,
+        "session_risk_score": 0.0,
+        "final_risk_score": 1.0,
+        "risk_level": "CRITICAL",
+        "severity": "CRITICAL",
+        "highest_severity": "CRITICAL",
+        "verification_required": false,
+        "risk_types": [
+          "PII"
+        ],
+        "candidate_actions": [
+          "BLOCK",
+          "BLOCK",
+          "BLOCK",
+          "BLOCK"
+        ],
+        "reasons": [
+          "TIER0_PII_CRITICAL",
+          "TIER0_PII_CRITICAL"
+        ]
+      },
+      "policy_events": [
+        {
+          "event_type": "PII",
+          "detector": "Tier0_PII_SSN",
+          "severity": "CRITICAL",
+          "confidence": 0.99,
+          "matched_text": "111-22-3301",
+          "metadata": {
+            "pii_type": "SSN"
+          },
+          "action_taken": "BLOCK"
+        },
+        {
+          "event_type": "PII",
+          "detector": "Tier0_PII_SSN",
+          "severity": "CRITICAL",
+          "confidence": 0.99,
+          "matched_text": "000-55-9876",
+          "metadata": {
+            "pii_type": "SSN"
+          },
+          "action_taken": "BLOCK"
+        },
+        {
+          "event_type": "PII",
+          "detector": "Tier0_PII_Email",
+          "severity": "HIGH",
+          "confidence": 0.95,
+          "matched_text": "john.smith@example.com",
+          "metadata": {
+            "pii_type": "EMAIL"
+          },
+          "action_taken": "BLOCK"
+        },
+        {
+          "event_type": "PII",
+          "detector": "Tier0_PII_Phone",
+          "severity": "MEDIUM",
+          "confidence": 0.9,
+          "matched_text": "555-019-4821",
+          "metadata": {
+            "pii_type": "PHONE"
+          },
+          "action_taken": "BLOCK"
+        }
+      ],
+      "claims": [],
+      "repair_history": [],
+      "adjudication_invocations": 0,
+      "session_risk": {
+        "session_id": "36cf358f-f5d4-4c90-b1a5-559af8d0774d",
+        "prior_score": 0.0,
+        "current_score": 5.0,
+        "level": "ELEVATED",
+        "turn_count": 1,
+        "violations_count": 1,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 0
+      },
+      "applied_policy": {
+        "application_id": "11111111-1111-1111-1111-111111111111",
+        "application_name": "Customer Support Assistant",
+        "policy_name": "Customer Support Default Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "MEDIUM",
+        "require_grounding": false,
+        "thresholds": {
+          "nli_confidence_threshold": 0.75,
+          "adjudication_confidence_threshold": 0.8,
+          "adjudication_budget_usd": 0.02,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.85,
+          "min_evidence_quality": 0.55,
+          "session_risk_elevated_threshold": 3.0,
+          "session_risk_strict_threshold": 7.0,
+          "max_consecutive_uncertainties": 3
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 18,
+        "output_tokens": 22,
+        "total_tokens": 40,
+        "total_latency_ms": 13,
+        "estimated_model_cost_usd": 1.6e-05,
+        "estimated_adjudication_cost_usd": 0.0,
+        "total_cost_usd": 1.6e-05,
+        "adjudication_calls": 0,
+        "repair_attempts": 0
+      },
+      "timing_telemetry": {
+        "preflight_ms": 3.14,
+        "model_ms": 0.01,
+        "tier0_ms": 0.08,
+        "risk_ms": 0.02,
+        "tier1_ms": 0.0,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 0.0,
+        "repair_ms": 0.0,
+        "action_ms": 0.01,
+        "session_risk_ms": 0.04,
+        "total_controlplane_ms": 13.1
+      }
+    }
+  },
+  "3_HIGH_SEVERITY_GEMINI": {
+    "status_code": 200,
+    "response": {
+      "request_id": "351638f0-0b1a-48bb-96c4-30de70ba911e",
+      "application_id": "33333333-3333-3333-3333-333333333333",
+      "policy_version_id": "33333333-0000-0000-0000-000000000001",
+      "action": "ALLOW",
+      "final_content": "Customer courtesy fee waivers are strictly capped at $200 and require explicit manager sign-off.",
+      "risk_assessment": {
+        "task_risk_score": 0.95,
+        "response_risk_score": 0.35,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 1.0,
+        "severity_score": 1.0,
+        "session_risk_score": 0.0,
+        "final_risk_score": 0.765,
+        "risk_level": "HIGH",
+        "severity": "HIGH",
+        "highest_severity": "HIGH",
+        "verification_required": true,
+        "risk_types": [],
+        "candidate_actions": [
+          "ALLOW"
+        ],
+        "reasons": [
+          "POLICY_STRICT_GROUNDING_REQUIRED",
+          "HIGH_CONSEQUENCE_DOMAIN"
+        ]
+      },
+      "policy_events": [],
+      "claims": [
+        {
+          "claim_id": "f25f193d-71fc-425e-a415-5937b4bcda89",
+          "claim_index": 0,
+          "claim_text": "Customer courtesy fee waivers are strictly capped at $200 and require explicit manager sign-off.",
+          "severity": "MEDIUM",
+          "verification_status": "DIRECT_NLI",
+          "final_label": "SUPPORTED",
+          "nli_confidence": 1.0,
+          "top2_scores": {
+            "SUPPORTED": 1.0
+          },
+          "adjudication_trigger": "NONE",
+          "uncertainty_reason": "NONE",
+          "adjudicator_model": "gemini-flash-lite-latest",
+          "adjudicator_confidence": 1.0,
+          "adjudication_invoked": false,
+          "evidence_quality": {
+            "authority": "HIGH",
+            "freshness": 1.0,
+            "relevance": 1.0,
+            "completeness": 0.6667,
+            "quality_score": 0.9333,
+            "freshness_status": "FRESH"
+          }
+        }
+      ],
+      "repair_history": [],
+      "adjudication_invocations": 1,
+      "session_risk": {
+        "session_id": "351638f0-0b1a-48bb-96c4-30de70ba911e",
+        "prior_score": 0.0,
+        "current_score": 0.0,
+        "level": "NORMAL",
+        "turn_count": 1,
+        "violations_count": 0,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 0
+      },
+      "applied_policy": {
+        "application_id": "33333333-3333-3333-3333-333333333333",
+        "application_name": "Decision Support System",
+        "policy_name": "Decision Support Strict Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "LOW",
+        "require_grounding": true,
+        "thresholds": {
+          "nli_confidence_threshold": 0.85,
+          "adjudication_confidence_threshold": 0.9,
+          "adjudication_budget_usd": 0.05,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.88,
+          "min_evidence_quality": 0.65,
+          "session_risk_elevated_threshold": 2.0,
+          "session_risk_strict_threshold": 5.0,
+          "max_consecutive_uncertainties": 1
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 16,
+        "output_tokens": 24,
+        "total_tokens": 40,
+        "total_latency_ms": 1505,
+        "estimated_model_cost_usd": 1.7e-05,
+        "estimated_adjudication_cost_usd": 0.005,
+        "total_cost_usd": 0.005017,
+        "adjudication_calls": 1,
+        "repair_attempts": 0
+      },
+      "timing_telemetry": {
+        "preflight_ms": 3.27,
+        "model_ms": 0.0,
+        "tier0_ms": 0.05,
+        "risk_ms": 0.03,
+        "tier1_ms": 1464.79,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 3.79,
+        "repair_ms": 0.0,
+        "action_ms": 0.01,
+        "session_risk_ms": 0.04,
+        "total_controlplane_ms": 1505.25
+      }
+    }
+  },
+  "4_CONTRADICTION_REPAIR_ALLOW": {
+    "status_code": 200,
+    "response": {
+      "request_id": "1ef6f0d8-00bb-46fa-b285-416525c2ff8a",
+      "application_id": "33333333-3333-3333-3333-333333333333",
+      "policy_version_id": "33333333-0000-0000-0000-000000000001",
+      "action": "ALLOW",
+      "final_content": "Customer courtesy fee waivers are strictly capped at $200 per account and require formal supervisor signoff.",
+      "risk_assessment": {
+        "task_risk_score": 0.95,
+        "response_risk_score": 0.35,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 1.0,
+        "severity_score": 1.0,
+        "session_risk_score": 0.0,
+        "final_risk_score": 0.765,
+        "risk_level": "HIGH",
+        "severity": "HIGH",
+        "highest_severity": "HIGH",
+        "verification_required": true,
+        "risk_types": [
+          "HALLUCINATION"
+        ],
+        "candidate_actions": [
+          "ALLOW"
+        ],
+        "reasons": [
+          "POLICY_STRICT_GROUNDING_REQUIRED",
+          "HIGH_CONSEQUENCE_DOMAIN"
+        ]
+      },
+      "policy_events": [],
+      "claims": [
+        {
+          "claim_id": "9aa22490-39c8-4c95-b093-6d985e453479",
+          "claim_index": 0,
+          "claim_text": "Customer courtesy fee waivers are strictly capped at $200 per account and require formal supervisor signoff.",
+          "severity": "MEDIUM",
+          "verification_status": "DIRECT_NLI",
+          "final_label": "SUPPORTED",
+          "nli_confidence": 1.0,
+          "top2_scores": {
+            "SUPPORTED": 1.0
+          },
+          "adjudication_trigger": "NONE",
+          "uncertainty_reason": "NONE",
+          "adjudicator_model": "gemini-flash-lite-latest",
+          "adjudicator_confidence": 1.0,
+          "adjudication_invoked": false,
+          "evidence_quality": {
+            "authority": "HIGH",
+            "freshness": 1.0,
+            "relevance": 1.0,
+            "completeness": 1.0,
+            "quality_score": 1.0,
+            "freshness_status": "FRESH"
+          }
+        }
+      ],
+      "repair_history": [
+        {
+          "attempt": 1,
+          "failed_claims_count": 1,
+          "repair_prompt": "The previous response contained factual errors contradicted by authoritative enterprise documents:\n\nContradicted claim(s):\n- Yes, all customers are granted unconditional $1,000 fee waivers immediately upon request without any managerial approval.\n\nAuthoritative evidence:\n- [doc-waivers-2026] Customer courtesy fee waivers are strictly capped at $200 per account and require formal supervisor signoff. Unlimited or $1000 waivers are strictly prohibited.\n\nPlease regenerate the response strictly adhering to the authoritative evidence. Do not include the contradicted claims.",
+          "previous_content": "Yes, all customers are granted unconditional $1,000 fee waivers immediately upon request without any managerial approval.",
+          "repaired_content": "Customer courtesy fee waivers are strictly capped at $200 per account and require formal supervisor signoff.",
+          "repaired_preview": "Customer courtesy fee waivers are strictly capped at $200 per account and requir"
+        }
+      ],
+      "adjudication_invocations": 1,
+      "session_risk": {
+        "session_id": "1ef6f0d8-00bb-46fa-b285-416525c2ff8a",
+        "prior_score": 0.0,
+        "current_score": 0.0,
+        "level": "NORMAL",
+        "turn_count": 1,
+        "violations_count": 0,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 0
+      },
+      "applied_policy": {
+        "application_id": "33333333-3333-3333-3333-333333333333",
+        "application_name": "Decision Support System",
+        "policy_name": "Decision Support Strict Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "LOW",
+        "require_grounding": true,
+        "thresholds": {
+          "nli_confidence_threshold": 0.85,
+          "adjudication_confidence_threshold": 0.9,
+          "adjudication_budget_usd": 0.05,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.88,
+          "min_evidence_quality": 0.65,
+          "session_risk_elevated_threshold": 2.0,
+          "session_risk_strict_threshold": 5.0,
+          "max_consecutive_uncertainties": 1
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 17,
+        "output_tokens": 27,
+        "total_tokens": 44,
+        "total_latency_ms": 1351,
+        "estimated_model_cost_usd": 1.9e-05,
+        "estimated_adjudication_cost_usd": 0.005,
+        "total_cost_usd": 0.005019,
+        "adjudication_calls": 1,
+        "repair_attempts": 1
+      },
+      "timing_telemetry": {
+        "preflight_ms": 3.14,
+        "model_ms": 0.0,
+        "tier0_ms": 0.11,
+        "risk_ms": 0.05,
+        "tier1_ms": 1308.1000000000001,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 1.1,
+        "repair_ms": 0.07,
+        "action_ms": 0.02,
+        "session_risk_ms": 0.04,
+        "total_controlplane_ms": 1351.21
+      }
+    }
+  },
+  "5_INSUFFICIENT_EVIDENCE_ESCALATE": {
+    "status_code": 200,
+    "response": {
+      "request_id": "54665fb0-46d9-429c-b3fe-eecb187b251b",
+      "application_id": "33333333-3333-3333-3333-333333333333",
+      "policy_version_id": "33333333-0000-0000-0000-000000000001",
+      "action": "ESCALATE",
+      "final_content": null,
+      "risk_assessment": {
+        "task_risk_score": 0.95,
+        "response_risk_score": 0.35,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 1.0,
+        "severity_score": 1.0,
+        "session_risk_score": 0.0,
+        "final_risk_score": 0.765,
+        "risk_level": "HIGH",
+        "severity": "HIGH",
+        "highest_severity": "HIGH",
+        "verification_required": true,
+        "risk_types": [
+          "UNGROUNDED"
+        ],
+        "candidate_actions": [
+          "ESCALATE"
+        ],
+        "reasons": [
+          "POLICY_STRICT_GROUNDING_REQUIRED",
+          "HIGH_CONSEQUENCE_DOMAIN"
+        ]
+      },
+      "policy_events": [],
+      "claims": [
+        {
+          "claim_id": "8dbd4e4b-0e75-4a4f-a4db-ab647ec0f843",
+          "claim_index": 0,
+          "claim_text": "Quantum teleportation parcel shipping is covered by standard domestic warranty.",
+          "severity": "MEDIUM",
+          "verification_status": "INSUFFICIENT_EVIDENCE",
+          "final_label": "INSUFFICIENT_EVIDENCE",
+          "nli_confidence": 0.0,
+          "top2_scores": null,
+          "adjudication_trigger": "NONE",
+          "uncertainty_reason": "NONE",
+          "adjudicator_model": null,
+          "adjudicator_confidence": null,
+          "adjudication_invoked": false,
+          "evidence_quality": null
+        }
+      ],
+      "repair_history": [],
+      "adjudication_invocations": 0,
+      "session_risk": {
+        "session_id": "54665fb0-46d9-429c-b3fe-eecb187b251b",
+        "prior_score": 0.0,
+        "current_score": 0.0,
+        "level": "NORMAL",
+        "turn_count": 1,
+        "violations_count": 0,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 0
+      },
+      "applied_policy": {
+        "application_id": "33333333-3333-3333-3333-333333333333",
+        "application_name": "Decision Support System",
+        "policy_name": "Decision Support Strict Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "LOW",
+        "require_grounding": true,
+        "thresholds": {
+          "nli_confidence_threshold": 0.85,
+          "adjudication_confidence_threshold": 0.9,
+          "adjudication_budget_usd": 0.05,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.88,
+          "min_evidence_quality": 0.65,
+          "session_risk_elevated_threshold": 2.0,
+          "session_risk_strict_threshold": 5.0,
+          "max_consecutive_uncertainties": 1
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 21,
+        "output_tokens": 19,
+        "total_tokens": 40,
+        "total_latency_ms": 20,
+        "estimated_model_cost_usd": 1.5e-05,
+        "estimated_adjudication_cost_usd": 0.0,
+        "total_cost_usd": 1.5e-05,
+        "adjudication_calls": 0,
+        "repair_attempts": 0
+      },
+      "timing_telemetry": {
+        "preflight_ms": 3.13,
+        "model_ms": 0.0,
+        "tier0_ms": 0.05,
+        "risk_ms": 0.03,
+        "tier1_ms": 0.07,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 0.06,
+        "repair_ms": 0.0,
+        "action_ms": 0.01,
+        "session_risk_ms": 0.03,
+        "total_controlplane_ms": 20.36
+      }
+    }
+  },
+  "6_ADJUDICATION_INCONCLUSIVE_ESCALATE": {
+    "status_code": 200,
+    "response": {
+      "request_id": "fd818adc-a17a-43e5-9d23-82fba0e8affb",
+      "application_id": "33333333-3333-3333-3333-333333333333",
+      "policy_version_id": "33333333-0000-0000-0000-000000000001",
+      "action": "ESCALATE",
+      "final_content": null,
+      "risk_assessment": {
+        "task_risk_score": 0.6,
+        "response_risk_score": 0.1,
+        "evidence_availability_score": 1.0,
+        "sensitivity_score": 1.0,
+        "severity_score": 1.0,
+        "session_risk_score": 0.0,
+        "final_risk_score": 0.545,
+        "risk_level": "MEDIUM",
+        "severity": "HIGH",
+        "highest_severity": "HIGH",
+        "verification_required": true,
+        "risk_types": [
+          "UNCERTAINTY"
+        ],
+        "candidate_actions": [
+          "ESCALATE"
+        ],
+        "reasons": [
+          "POLICY_STRICT_GROUNDING_REQUIRED"
+        ]
+      },
+      "policy_events": [],
+      "claims": [
+        {
+          "claim_id": "d7220ab5-96ff-4c7c-9da7-a5d55eaf7c6b",
+          "claim_index": 0,
+          "claim_text": "Plan B provides complimentary international roaming across 45 designated countries subject to exclusions.",
+          "severity": "MEDIUM",
+          "verification_status": "ADJUDICATION_INCONCLUSIVE",
+          "final_label": null,
+          "nli_confidence": 0.55,
+          "top2_scores": {
+            "SUPPORTED": 0.55,
+            "CONTRADICTED": 0.45
+          },
+          "adjudication_trigger": "NLI_CLOSE_TOP2",
+          "uncertainty_reason": "JUDGE_LOW_CONFIDENCE",
+          "adjudicator_model": "gemini-2.5-flash",
+          "adjudicator_confidence": 0.48,
+          "adjudication_invoked": true,
+          "evidence_quality": {
+            "authority": "HIGH",
+            "freshness": 1.0,
+            "relevance": 1.0,
+            "completeness": 0.8,
+            "quality_score": 0.96,
+            "freshness_status": "FRESH"
+          }
+        }
+      ],
+      "repair_history": [],
+      "adjudication_invocations": 1,
+      "session_risk": {
+        "session_id": "fd818adc-a17a-43e5-9d23-82fba0e8affb",
+        "prior_score": 0.0,
+        "current_score": 1.0,
+        "level": "NORMAL",
+        "turn_count": 1,
+        "violations_count": 0,
+        "contradictions_count": 0,
+        "repairs_count": 0,
+        "uncertainties_count": 1
+      },
+      "applied_policy": {
+        "application_id": "33333333-3333-3333-3333-333333333333",
+        "application_name": "Decision Support System",
+        "policy_name": "Decision Support Strict Policy",
+        "policy_version_number": 1,
+        "risk_appetite": "LOW",
+        "require_grounding": true,
+        "thresholds": {
+          "nli_confidence_threshold": 0.85,
+          "adjudication_confidence_threshold": 0.9,
+          "adjudication_budget_usd": 0.05,
+          "adjudication_top2_margin": 0.15,
+          "high_severity_nli_threshold": 0.88,
+          "min_evidence_quality": 0.65,
+          "session_risk_elevated_threshold": 2.0,
+          "session_risk_strict_threshold": 5.0,
+          "max_consecutive_uncertainties": 1
+        }
+      },
+      "cost_telemetry": {
+        "input_tokens": 23,
+        "output_tokens": 26,
+        "total_tokens": 49,
+        "total_latency_ms": 27,
+        "estimated_model_cost_usd": 1.9e-05,
+        "estimated_adjudication_cost_usd": 0.005,
+        "total_cost_usd": 0.005019,
+        "adjudication_calls": 1,
+        "repair_attempts": 0
+      },
+      "timing_telemetry": {
+        "preflight_ms": 3.31,
+        "model_ms": 0.0,
+        "tier0_ms": 0.06,
+        "risk_ms": 0.03,
+        "tier1_ms": 1.71,
+        "evidence_quality_ms": 0.0,
+        "adjudication_ms": 0.98,
+        "repair_ms": 0.0,
+        "action_ms": 0.01,
+        "session_risk_ms": 0.04,
+        "total_controlplane_ms": 27.19
+      }
+    }
+  }
+}

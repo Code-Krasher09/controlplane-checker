@@ -65,17 +65,25 @@ class Settings(BaseSettings):
 
     @property
     def async_database_url(self) -> str:
-        """Construct async PostgreSQL connection string if not explicitly configured."""
+        """Construct async database connection string."""
         if self.database_url:
             return self.database_url
-        return (
-            f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@"
-            f"{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
-        )
+        try:
+            import asyncpg  # noqa: F401
+            return (
+                f"postgresql+asyncpg://{self.postgres_user}:{self.postgres_password}@"
+                f"{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+            )
+        except ImportError:
+            return "sqlite+aiosqlite:///controlplane.db"
 
     @property
     def sync_database_url(self) -> str:
-        """Construct sync PostgreSQL connection string for Alembic/management."""
+        """Construct sync database connection string for Alembic/management."""
+        if self.database_url:
+            if "sqlite" in self.database_url:
+                return self.database_url.replace("+aiosqlite", "")
+            return self.database_url.replace("+asyncpg", "")
         return (
             f"postgresql://{self.postgres_user}:{self.postgres_password}@"
             f"{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"

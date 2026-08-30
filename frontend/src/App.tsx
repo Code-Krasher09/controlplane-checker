@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   const [isDemoMode, setIsDemoMode] = useState<boolean>(true);
   const [selectedProfile, setSelectedProfile] = useState<string>('CUSTOMER_SUPPORT');
   const [activeScenarioId, setActiveScenarioId] = useState<string | null>('safe-fast-path');
-  const [currentResponse, setCurrentResponse] = useState<GatewayInspectResponse | null>(DEMO_SCENARIOS[0].mockResponse);
+  const [currentResponse, setCurrentResponse] = useState<GatewayInspectResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const App: React.FC = () => {
 
   const handleSelectScenario = (scenario: DemoScenario) => {
     setActiveScenarioId(scenario.id);
-    setCurrentResponse(scenario.mockResponse);
+    setCurrentResponse(null); // Clear previous inspection outcome to return central panel to READY
     if (scenario.payload.application_id === '33333333-3333-3333-3333-333333333333') {
       setSelectedProfile('DECISION_SUPPORT');
     } else if (scenario.payload.application_id === '22222222-2222-2222-2222-222222222222') {
@@ -100,7 +100,7 @@ export const App: React.FC = () => {
         fontSize: '0.75rem',
         color: 'var(--text-muted)',
       }}>
-        ControlPlane Checker Prototype V1.3 • High-Severity Selective Gemini Hybrid Architecture • Tested across 130 regression benchmarks
+        ControlPlane Checker Prototype V1.3 • High-Severity Selective Gemini Hybrid Architecture • Tested across 143 regression tests
       </footer>
     </div>
   );

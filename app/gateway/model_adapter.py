@@ -85,9 +85,16 @@ class MockModelProvider(ModelProvider):
             prompt_upper = prompt.upper()
             if "PII" in prompt_upper or "EMAIL" in prompt_upper or "SSN" in prompt_upper:
                 selected_scenario = "PII"
-            elif "CONTRADICT" in prompt_upper or "WAIVER" in prompt_upper:
+            elif "CONTRADICT" in prompt_upper or "WAIVER" in prompt_upper or "$1,000" in prompt_upper or "$1000" in prompt_upper:
                 selected_scenario = "CONTRADICTED"
-            elif "UNKNOWN" in prompt_upper or "QUANTUM" in prompt_upper or "NO EVIDENCE" in prompt_upper:
+            elif (
+                "UNKNOWN" in prompt_upper
+                or "QUANTUM" in prompt_upper
+                or "NO EVIDENCE" in prompt_upper
+                or "TELEPORT" in prompt_upper
+                or "INTERDIMENSIONAL" in prompt_upper
+                or "WARP" in prompt_upper
+            ):
                 selected_scenario = "INSUFFICIENT"
             elif "AMBIGUOUS" in prompt_upper or "PLAN B" in prompt_upper or "ROAMING" in prompt_upper:
                 selected_scenario = "AMBIGUOUS_NLI"

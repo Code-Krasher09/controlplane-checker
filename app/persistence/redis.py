@@ -13,30 +13,40 @@ class RuntimeStateStore:
     for isolated unit tests and local prototype execution.
     """
 
+    _GLOBAL_USE_IN_MEMORY: bool = False
+    _GLOBAL_REDIS: Optional[aioredis.Redis] = None
+
     def __init__(self, settings: Optional[Settings] = None):
         self.settings = settings or get_settings()
         self._redis: Optional[aioredis.Redis] = None
         self._in_memory: Dict[str, str] = {}
-        self._use_in_memory: bool = False
+        self._use_in_memory: bool = RuntimeStateStore._GLOBAL_USE_IN_MEMORY
 
     async def get_client(self) -> Optional[aioredis.Redis]:
         """Return connected Redis client or initialize connection."""
-        if self._use_in_memory:
+        if self._use_in_memory or RuntimeStateStore._GLOBAL_USE_IN_MEMORY:
             return None
 
         if self._redis is None:
+            if RuntimeStateStore._GLOBAL_REDIS is not None:
+                self._redis = RuntimeStateStore._GLOBAL_REDIS
+                return self._redis
+
             try:
                 url = self.settings.redis_url or f"redis://{self.settings.redis_host}:{self.settings.redis_port}/{self.settings.redis_db}"
-                self._redis = aioredis.from_url(
+                client = aioredis.from_url(
                     url,
                     encoding="utf-8",
                     decode_responses=True,
-                    socket_connect_timeout=1.0,
+                    socket_connect_timeout=0.05,
                 )
-                await self._redis.ping()
+                await client.ping()
+                self._redis = client
+                RuntimeStateStore._GLOBAL_REDIS = client
             except Exception:
-                # Fallback gracefully to in-memory mode for offline unit testing
+                # Fallback gracefully to in-memory mode for offline execution
                 self._use_in_memory = True
+                RuntimeStateStore._GLOBAL_USE_IN_MEMORY = True
                 self._redis = None
         return self._redis
 

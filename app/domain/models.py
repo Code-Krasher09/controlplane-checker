@@ -247,6 +247,8 @@ class VerifierResponse(BaseModel):
     adjudication_trigger: AdjudicationTrigger = AdjudicationTrigger.NONE
     uncertainty_reason: UncertaintyReason = UncertaintyReason.NONE
     evidence_quality: Optional[ClaimEvidenceQuality] = None
+    adjudicator_model: Optional[str] = None
+    adjudicator_confidence: Optional[float] = None
 
 
 # --- Adjudication API Contracts ---

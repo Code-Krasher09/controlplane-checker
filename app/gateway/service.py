@@ -66,7 +66,11 @@ class GatewayService:
         self.preflight_service = preflight_service or PreflightService()
         self.tier0_service = tier0_service or Tier0Service()
         self.risk_engine = risk_engine or RiskEngine()
-        self.tier1_service = tier1_service or Tier1Service()
+        if tier1_service is None:
+            from app.tier1.hybrid_verifier import HighSeverityHybridVerifier
+            self.tier1_service = Tier1Service(verifier=HighSeverityHybridVerifier(enable_gemini=True))
+        else:
+            self.tier1_service = tier1_service
         self.state_store = state_store or RuntimeStateStore()
         self.adjudication_service = adjudication_service or AdjudicationService(state_store=self.state_store)
         self.repair_service = repair_service or RepairService()
@@ -342,6 +346,9 @@ class GatewayService:
                     if was_invoked:
                         total_adjudication_calls += 1
                         total_adjudication_cost += adj_cost
+                    elif updated_claim.adjudicator_model and ("gemini" in updated_claim.adjudicator_model.lower() or "flash" in updated_claim.adjudicator_model.lower()):
+                        total_adjudication_calls += 1
+                        total_adjudication_cost += 0.0003
 
                     adjudicated_claims.append(updated_claim)
 
@@ -503,6 +510,8 @@ class GatewayService:
                     "attempt": attempt_number + 1,
                     "failed_claims_count": len(failed_claims),
                     "repair_prompt": repair_plan.repair_prompt,
+                    "previous_content": current_response_content,
+                    "repaired_content": repaired_res.content,
                     "repaired_preview": repaired_res.content[:80],
                 })
 
