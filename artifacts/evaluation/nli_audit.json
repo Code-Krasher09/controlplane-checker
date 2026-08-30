@@ -1,0 +1,182 @@
+[
+  {
+    "description": "Direct Support",
+    "expected_relation": "Direct Support",
+    "actual_label": "SUPPORTED",
+    "confidence": 0.8553809523582458,
+    "top2": {
+      "SUPPORTED": 0.8553809523582458,
+      "INSUFFICIENT_EVIDENCE": 0.1443747878074646
+    },
+    "premise_length": 29,
+    "hypothesis_length": 39
+  },
+  {
+    "description": "Direct Contradiction",
+    "expected_relation": "Direct Contradiction",
+    "actual_label": "INSUFFICIENT_EVIDENCE",
+    "confidence": 0.7523079514503479,
+    "top2": {
+      "INSUFFICIENT_EVIDENCE": 0.7523079514503479,
+      "CONTRADICTED": 0.1277470886707306
+    },
+    "premise_length": 29,
+    "hypothesis_length": 39
+  },
+  {
+    "description": "Neutral",
+    "expected_relation": "Neutral",
+    "actual_label": "INSUFFICIENT_EVIDENCE",
+    "confidence": 0.9982996582984924,
+    "top2": {
+      "INSUFFICIENT_EVIDENCE": 0.9982996582984924,
+      "CONTRADICTED": 0.001644597970880568
+    },
+    "premise_length": 29,
+    "hypothesis_length": 41
+  },
+  {
+    "description": "Paraphrase",
+    "expected_relation": "Paraphrase",
+    "actual_label": "SUPPORTED",
+    "confidence": 0.9886144399642944,
+    "top2": {
+      "SUPPORTED": 0.9886144399642944,
+      "INSUFFICIENT_EVIDENCE": 0.010911455377936363
+    },
+    "premise_length": 45,
+    "hypothesis_length": 74
+  },
+  {
+    "description": "Negation",
+    "expected_relation": "Negation",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.9992986917495728,
+    "top2": {
+      "CONTRADICTED": 0.9992986917495728,
+      "SUPPORTED": 0.00042670092079788446
+    },
+    "premise_length": 38,
+    "hypothesis_length": 30
+  },
+  {
+    "description": "Numerical Contradiction",
+    "expected_relation": "Numerical Contradiction",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.9994853734970093,
+    "top2": {
+      "CONTRADICTED": 0.9994853734970093,
+      "INSUFFICIENT_EVIDENCE": 0.00035194665542803705
+    },
+    "premise_length": 16,
+    "hypothesis_length": 15
+  },
+  {
+    "description": "Partial Support",
+    "expected_relation": "Partial Support",
+    "actual_label": "SUPPORTED",
+    "confidence": 0.9919073581695557,
+    "top2": {
+      "SUPPORTED": 0.9919073581695557,
+      "INSUFFICIENT_EVIDENCE": 0.007515272591263056
+    },
+    "premise_length": 42,
+    "hypothesis_length": 22
+  },
+  {
+    "description": "Related-But-Not-Supporting",
+    "expected_relation": "Related-But-Not-Supporting",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.9996707439422607,
+    "top2": {
+      "CONTRADICTED": 0.9996707439422607,
+      "INSUFFICIENT_EVIDENCE": 0.00031345756724476814
+    },
+    "premise_length": 35,
+    "hypothesis_length": 24
+  },
+  {
+    "description": "Multiple chunks",
+    "expected_relation": "Multiple chunks",
+    "actual_label": "SUPPORTED",
+    "confidence": 0.991970419883728,
+    "top2": {
+      "SUPPORTED": 0.991970419883728,
+      "INSUFFICIENT_EVIDENCE": 0.007526025641709566
+    },
+    "premise_length": 71,
+    "hypothesis_length": 39
+  },
+  {
+    "description": "Conflicting Evidence",
+    "expected_relation": "Conflicting Evidence",
+    "actual_label": "INSUFFICIENT_EVIDENCE",
+    "confidence": 0.9312790632247925,
+    "top2": {
+      "INSUFFICIENT_EVIDENCE": 0.9312790632247925,
+      "CONTRADICTED": 0.06161590665578842
+    },
+    "premise_length": 80,
+    "hypothesis_length": 20
+  },
+  {
+    "description": "Stale Evidence",
+    "expected_relation": "Stale Evidence",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.6479135751724243,
+    "top2": {
+      "CONTRADICTED": 0.6479135751724243,
+      "SUPPORTED": 0.2883225083351135
+    },
+    "premise_length": 54,
+    "hypothesis_length": 15
+  },
+  {
+    "description": "Long Evidence",
+    "expected_relation": "Long Evidence",
+    "actual_label": "SUPPORTED",
+    "confidence": 0.9862173795700073,
+    "top2": {
+      "SUPPORTED": 0.9862173795700073,
+      "INSUFFICIENT_EVIDENCE": 0.01142879482358694
+    },
+    "premise_length": 1474,
+    "hypothesis_length": 17
+  },
+  {
+    "description": "Multiple Facts Claim",
+    "expected_relation": "Multiple Facts Claim",
+    "actual_label": "INSUFFICIENT_EVIDENCE",
+    "confidence": 0.9994219541549683,
+    "top2": {
+      "INSUFFICIENT_EVIDENCE": 0.9994219541549683,
+      "CONTRADICTED": 0.00030872912611812353
+    },
+    "premise_length": 18,
+    "hypothesis_length": 40
+  },
+  {
+    "description": "Ambiguous",
+    "expected_relation": "Ambiguous",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.9727638959884644,
+    "top2": {
+      "CONTRADICTED": 0.9727638959884644,
+      "INSUFFICIENT_EVIDENCE": 0.026839692145586014
+    },
+    "premise_length": 35,
+    "hypothesis_length": 42
+  },
+  {
+    "description": "High-Severity Ambiguous",
+    "expected_relation": "High-Severity Ambiguous",
+    "actual_label": "CONTRADICTED",
+    "confidence": 0.8640305399894714,
+    "top2": {
+      "CONTRADICTED": 0.8640305399894714,
+      "INSUFFICIENT_EVIDENCE": 0.135503351688385
+    },
+    "premise_length": 48,
+    "hypothesis_length": 52
+  }
+]

@@ -1,0 +1,148 @@
+{
+  "all_case_metrics": {
+    "total_applicable_cases": 30,
+    "nli_errors": 16,
+    "gate_triggered": 0,
+    "gate_precision_num": 0,
+    "gate_precision_denom": 0,
+    "gate_recall_num": 0,
+    "gate_recall_denom": 16,
+    "false_triggers": 0,
+    "missed_ambiguities": 16,
+    "gate_precision": 0.0,
+    "gate_recall": 0.0,
+    "false_trigger_rate": 0.0,
+    "missed_ambiguity_rate": 1.0,
+    "adjudication_coverage": 0.0
+  },
+  "diagnostic_subset": [
+    {
+      "case_id": "holdout-contra-001",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-002",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-003",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-004",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-005",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-006",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-007",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-contra-008",
+      "expected": "CONTRADICTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.9768638014793396,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-adj-allow-001",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-adj-allow-002",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-adj-allow-003",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-adj-allow-004",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-bias-001",
+      "expected": "SUPPORTED",
+      "actual": null,
+      "confidence": null,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-tox-001",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-bias-hn-001",
+      "expected": "SUPPORTED",
+      "actual": "INSUFFICIENT_EVIDENCE",
+      "confidence": 0.0,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    },
+    {
+      "case_id": "holdout-safe-016",
+      "expected": "SUPPORTED",
+      "actual": null,
+      "confidence": null,
+      "gate_triggered": false,
+      "trigger_reason": "NONE"
+    }
+  ]
+}

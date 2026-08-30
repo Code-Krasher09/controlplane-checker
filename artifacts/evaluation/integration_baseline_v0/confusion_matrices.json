@@ -1,0 +1,14 @@
+{
+  "ALLOW": {
+    "ALLOW": 99
+  },
+  "ESCALATE": {
+    "ESCALATE": 43
+  },
+  "BLOCK": {
+    "BLOCK": 20
+  },
+  "WARN": {
+    "WARN": 18
+  }
+}

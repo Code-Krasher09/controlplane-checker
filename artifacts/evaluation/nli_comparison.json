@@ -1,0 +1,113 @@
+{
+  "Current Adapter + Current Model": {
+    "accuracy": 0.7666666666666667,
+    "macro_recall": 0.7666666666666666,
+    "latency": 2.6461917999986326,
+    "calibration": {
+      "0.0-0.5": {
+        "total": 2,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.5-0.6": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.6-0.7": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.7-0.8": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.8-0.9": {
+        "total": 2,
+        "correct": 1,
+        "ambiguous": 1
+      },
+      "0.9-1.0": {
+        "total": 26,
+        "correct": 22,
+        "ambiguous": 2
+      }
+    }
+  },
+  "Corrected Semantics + Current Model": {
+    "accuracy": 0.7666666666666667,
+    "macro_recall": 0.7666666666666666,
+    "latency": 1.9006908000010299,
+    "calibration": {
+      "0.0-0.5": {
+        "total": 2,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.5-0.6": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.6-0.7": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.7-0.8": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.8-0.9": {
+        "total": 2,
+        "correct": 1,
+        "ambiguous": 1
+      },
+      "0.9-1.0": {
+        "total": 26,
+        "correct": 22,
+        "ambiguous": 2
+      }
+    }
+  },
+  "Alternative Model + Correct Semantics": {
+    "accuracy": 0.8333333333333334,
+    "macro_recall": 0.8333333333333334,
+    "latency": 18.695586599998933,
+    "calibration": {
+      "0.0-0.5": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.5-0.6": {
+        "total": 1,
+        "correct": 1,
+        "ambiguous": 0
+      },
+      "0.6-0.7": {
+        "total": 1,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.7-0.8": {
+        "total": 0,
+        "correct": 0,
+        "ambiguous": 0
+      },
+      "0.8-0.9": {
+        "total": 3,
+        "correct": 2,
+        "ambiguous": 1
+      },
+      "0.9-1.0": {
+        "total": 25,
+        "correct": 22,
+        "ambiguous": 2
+      }
+    }
+  }
+}

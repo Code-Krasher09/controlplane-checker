@@ -1,0 +1,58 @@
+{
+  "candidates": {
+    "A_SMALL_LOCAL_NLI": {
+      "semantic_accuracy": "76.7% (Microbench) / 50% (Holdout)",
+      "macro_f1": "0.767",
+      "contradiction_recall": "0.80",
+      "insufficiency_recall": "0.80",
+      "confidence_quality": "POOR (High ECE, confidently predicts INSUFFICIENT for contradictions)",
+      "gate_quality": "0% Recall (Missed 16/16 errors on Holdout)",
+      "unsafe_pass_rate": "24.0% (Holdout)",
+      "p95_latency": "84ms",
+      "cost_per_case": "$0",
+      "llm_invocation_rate": "0%",
+      "llm_calls_saved": "100%"
+    },
+    "B_LARGER_LOCAL_NLI": {
+      "semantic_accuracy": "83.3% (Microbench)",
+      "macro_f1": "0.833",
+      "contradiction_recall": "0.90",
+      "insufficiency_recall": "0.90",
+      "confidence_quality": "POOR (Similar overconfidence to small model)",
+      "gate_quality": "N/A (Assumed similar to small)",
+      "unsafe_pass_rate": "N/A",
+      "p95_latency": "819ms",
+      "cost_per_case": "$0",
+      "llm_invocation_rate": "0%",
+      "llm_calls_saved": "100%"
+    },
+    "C_LLM_DEFAULT": {
+      "semantic_accuracy": "UNMEASURED (No Credentials)",
+      "macro_f1": "UNMEASURED",
+      "contradiction_recall": "UNMEASURED",
+      "insufficiency_recall": "UNMEASURED",
+      "confidence_quality": "UNMEASURED",
+      "gate_quality": "N/A",
+      "unsafe_pass_rate": "UNMEASURED",
+      "p95_latency": "UNMEASURED",
+      "cost_per_case": "UNMEASURED",
+      "llm_invocation_rate": "100%",
+      "llm_calls_saved": "0%"
+    },
+    "D_NLI_SELECTIVE_LLM": {
+      "semantic_accuracy": "50% (Holdout)",
+      "macro_f1": "N/A",
+      "contradiction_recall": "N/A",
+      "insufficiency_recall": "N/A",
+      "confidence_quality": "POOR",
+      "gate_quality": "0% Recall",
+      "unsafe_pass_rate": "24.0% (Holdout)",
+      "p95_latency": "125ms",
+      "cost_per_case": "$0 (Judge Never Invoked)",
+      "llm_invocation_rate": "0%",
+      "llm_calls_saved": "100%"
+    }
+  },
+  "final_decision": "NONE",
+  "bottleneck_identified": "Local zero-shot NLI models lack deductive reasoning for enterprise policies and produce catastrophic unsafe-pass rates (24%). Furthermore, their extreme overconfidence renders Selective Adjudication routing mathematically useless (0% gate recall). A real LLM is strictly required for acceptable semantic quality, but could not be evaluated due to missing API credentials."
+}

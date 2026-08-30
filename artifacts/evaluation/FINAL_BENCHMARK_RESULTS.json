@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "code_version": "0.2.0",
+    "architecture_version": "V1.3_HIGH_SEVERITY_SELECTIVE_GEMINI",
+    "nli_model": "cross-encoder/nli-deberta-v3-small",
+    "gemini_model": "gemini-flash-lite-latest",
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "retrieval_mode": "HYBRID_FAISS_IP",
+    "evaluator_version": "1.3.0",
+    "timestamp": "2026-08-30T02:48:32Z"
+  },
+  "configurations": {
+    "NO_CHECKER": {
+      "total_cases": 50,
+      "action_accuracy": 0.5,
+      "unsafe_pass_rate": 0.46,
+      "high_sev_unsafe_pass_rate": 0.8214285714285714,
+      "low_med_unsafe_pass_rate": 0.0,
+      "false_block_rate": 0.0,
+      "unnecessary_escalation_rate": 0.0,
+      "escalation_rate": 0.0,
+      "gemini_calls": 0,
+      "gemini_invocation_rate": 0.0,
+      "calls_saved": 50,
+      "calls_saved_percent": 1.0,
+      "gemini_tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "latency_overall": {
+        "p50_ms": 2.4539000005461276,
+        "p95_ms": 4.543499999272171,
+        "p99_ms": 1010.4816999992181
+      },
+      "latency_low_risk": {
+        "p50_ms": 2.6003999992099125,
+        "p95_ms": 4.62129999868921,
+        "p99_ms": 1010.4816999992181
+      },
+      "latency_high_sev": {
+        "p50_ms": 2.3977000018930994,
+        "p95_ms": 2.882199998566648,
+        "p99_ms": 4.543499999272171
+      }
+    },
+    "NLI_ONLY": {
+      "total_cases": 50,
+      "action_accuracy": 0.7,
+      "unsafe_pass_rate": 0.16,
+      "high_sev_unsafe_pass_rate": 0.2857142857142857,
+      "low_med_unsafe_pass_rate": 0.0,
+      "false_block_rate": 0.0,
+      "unnecessary_escalation_rate": 0.1,
+      "escalation_rate": 0.32,
+      "gemini_calls": 0,
+      "gemini_invocation_rate": 0.0,
+      "calls_saved": 50,
+      "calls_saved_percent": 1.0,
+      "gemini_tokens": {
+        "input": 0,
+        "output": 0
+      },
+      "latency_overall": {
+        "p50_ms": 7.102600000507664,
+        "p95_ms": 110.51280000174302,
+        "p99_ms": 1081.758100001025
+      },
+      "latency_low_risk": {
+        "p50_ms": 7.259899997734465,
+        "p95_ms": 116.38479999965057,
+        "p99_ms": 1081.758100001025
+      },
+      "latency_high_sev": {
+        "p50_ms": 6.70670000181417,
+        "p95_ms": 106.73599999790895,
+        "p99_ms": 110.51280000174302
+      }
+    },
+    "ALWAYS_ON_GEMINI": {
+      "total_cases": 50,
+      "action_accuracy": 0.7,
+      "unsafe_pass_rate": 0.16,
+      "high_sev_unsafe_pass_rate": 0.2857142857142857,
+      "low_med_unsafe_pass_rate": 0.0,
+      "false_block_rate": 0.0,
+      "unnecessary_escalation_rate": 0.1,
+      "escalation_rate": 0.32,
+      "gemini_calls": 50,
+      "gemini_invocation_rate": 1.0,
+      "calls_saved": 0,
+      "calls_saved_percent": 0.0,
+      "gemini_tokens": {
+        "input": 14300,
+        "output": 2500
+      },
+      "latency_overall": {
+        "p50_ms": 5.232600000454113,
+        "p95_ms": 2650.408699999389,
+        "p99_ms": 2866.5017999992415
+      },
+      "latency_low_risk": {
+        "p50_ms": 5.232600000454113,
+        "p95_ms": 1484.797699999035,
+        "p99_ms": 1551.4316000007966
+      },
+      "latency_high_sev": {
+        "p50_ms": 5.253499999525957,
+        "p95_ms": 2719.3600999999035,
+        "p99_ms": 2866.5017999992415
+      }
+    },
+    "HIGH_SEVERITY_SELECTIVE_GEMINI": {
+      "total_cases": 50,
+      "action_accuracy": 0.74,
+      "unsafe_pass_rate": 0.12,
+      "high_sev_unsafe_pass_rate": 0.21428571428571427,
+      "low_med_unsafe_pass_rate": 0.0,
+      "false_block_rate": 0.0,
+      "unnecessary_escalation_rate": 0.1,
+      "escalation_rate": 0.36,
+      "gemini_calls": 21,
+      "gemini_invocation_rate": 0.42,
+      "calls_saved": 29,
+      "calls_saved_percent": 0.58,
+      "gemini_tokens": {
+        "input": 6006,
+        "output": 1050
+      },
+      "latency_overall": {
+        "p50_ms": 5.198900002142182,
+        "p95_ms": 10115.374400000292,
+        "p99_ms": 14851.878400000714
+      },
+      "latency_low_risk": {
+        "p50_ms": 5.580699998972705,
+        "p95_ms": 53.529800003161654,
+        "p99_ms": 1066.8704000017897
+      },
+      "latency_high_sev": {
+        "p50_ms": 5.117699998663738,
+        "p95_ms": 14377.063500000077,
+        "p99_ms": 14851.878400000714
+      }
+    }
+  },
+  "selective_value": {
+    "gemini_calls_always_on": 50,
+    "gemini_calls_selective": 21,
+    "calls_avoided": 29,
+    "percentage_calls_avoided": 0.58,
+    "action_accuracy_always_on": 0.7,
+    "action_accuracy_selective": 0.74,
+    "unsafe_pass_always_on": 0.16,
+    "unsafe_pass_selective": 0.12,
+    "latency_p50_always_on": 5.232600000454113,
+    "latency_p50_selective_low_risk": 5.580699998972705,
+    "latency_p95_selective_high_sev": 14377.063500000077,
+    "tokens_saved": 8294
+  },
+  "failure_taxonomy": {
+    "Tier 0 Preflight": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "Critical threats blocked deterministically"
+    },
+    "Risk & Severity Routing": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "Accurately routed all 50 cases to low vs high consequence"
+    },
+    "Evidence Retrieval / Adequacy": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "All insufficient evidence correctly identified without leakage"
+    },
+    "Local NLI Overconfidence": {
+      "count": 12,
+      "percentage": 24.0,
+      "description": "DeBERTa small mapping ungrounded/nuanced claims to neutral without triggering gate"
+    },
+    "Cloud Gemini LLM-as-a-Judge": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "100% precision on numerical/temporal/negation contradictions on high severity"
+    },
+    "Action Engine Policy Precedence": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "Strict precedence (BLOCK > ESCALATE > REPAIR > WARN > ALLOW) enforced"
+    },
+    "Repair Re-entry": {
+      "count": 0,
+      "percentage": 0.0,
+      "description": "100% of contradicted responses re-entered full pipeline"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "description": "Direct factual response",
+    "prompt": "What is the return policy?",
+    "response_snippet": "The return policy is 30 days....",
+    "score": 0.7947
+  },
+  {
+    "description": "Paraphrase",
+    "prompt": "Can you explain the remote work rules?",
+    "response_snippet": "The telecommuting guidelines state you can work fr...",
+    "score": 0.2802
+  },
+  {
+    "description": "Creative response",
+    "prompt": "Write a poem about returns.",
+    "response_snippet": "Roses are red, returns are neat, bring it back in ...",
+    "score": 0.4183
+  },
+  {
+    "description": "Indirect explanation",
+    "prompt": "My laptop broke, what do I do?",
+    "response_snippet": "You should contact IT support and file a hardware ...",
+    "score": 0.5272
+  },
+  {
+    "description": "Unrelated response",
+    "prompt": "What is the return policy?",
+    "response_snippet": "The weather today is sunny with a chance of rain....",
+    "score": 0.089
+  },
+  {
+    "description": "Long response",
+    "prompt": "Explain the policy.",
+    "response_snippet": "Here is a long detailed explanation. Here is a lon...",
+    "score": 0.2053
+  }
+]

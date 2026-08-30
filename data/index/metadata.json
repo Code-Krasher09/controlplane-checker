@@ -1,0 +1,314 @@
+[
+  {
+    "chunk_id": "doc-returns-2024__chunk_000",
+    "source_id": "doc-returns-2024",
+    "document_id": "doc-returns-2024",
+    "document_version": "v1.0",
+    "timestamp": "2024-01-01T00:00:00Z",
+    "authority": "MEDIUM",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "RETAIL",
+    "content": "Legacy retail return policy permits product returns within 14 days of purchase subject to a 15% restocking fee. Open box electronics are strictly non-refundable.",
+    "metadata": {
+      "is_deprecated": true,
+      "effective_year": 2024
+    }
+  },
+  {
+    "chunk_id": "doc-returns-2024__chunk_001",
+    "source_id": "doc-returns-2024",
+    "document_id": "doc-returns-2024",
+    "document_version": "v1.0",
+    "timestamp": "2024-01-01T00:00:00Z",
+    "authority": "MEDIUM",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "RETAIL",
+    "content": "Open box electronics are strictly non-refundable.",
+    "metadata": {
+      "is_deprecated": true,
+      "effective_year": 2024
+    }
+  },
+  {
+    "chunk_id": "doc-returns-2026__chunk_000",
+    "source_id": "doc-returns-2026",
+    "document_id": "doc-returns-2026",
+    "document_version": "v2.1",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "RETAIL",
+    "content": "Standard retail return policy permits full refunds within 30 days of product delivery in original packaging. Customers are entitled to full money back without restocking fees. Personalized or customized items are strictly excluded from returns.",
+    "metadata": {
+      "is_current": true,
+      "effective_year": 2026
+    }
+  },
+  {
+    "chunk_id": "doc-returns-2026__chunk_001",
+    "source_id": "doc-returns-2026",
+    "document_id": "doc-returns-2026",
+    "document_version": "v2.1",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "RETAIL",
+    "content": "Personalized or customized items are strictly excluded from returns.",
+    "metadata": {
+      "is_current": true,
+      "effective_year": 2026
+    }
+  },
+  {
+    "chunk_id": "doc-waivers-2024__chunk_000",
+    "source_id": "doc-waivers-2024",
+    "document_id": "doc-waivers-2024",
+    "document_version": "v1.0",
+    "timestamp": "2024-01-01T00:00:00Z",
+    "authority": "LOW",
+    "application_profile": "DECISION_SUPPORT",
+    "policy_scope": "FINANCIAL",
+    "content": "Legacy customer service waiver limit permits representative discretion up to $50 per customer incident without managerial review.",
+    "metadata": {
+      "is_deprecated": true
+    }
+  },
+  {
+    "chunk_id": "doc-waivers-2026__chunk_000",
+    "source_id": "doc-waivers-2026",
+    "document_id": "doc-waivers-2026",
+    "document_version": "v1.4",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "DECISION_SUPPORT",
+    "policy_scope": "FINANCIAL",
+    "content": "Customer courtesy fee waivers are strictly capped at $200 per account and require formal supervisor signoff. Unlimited or $1000 waivers are strictly prohibited under financial compliance rules. Waivers exceeding $200 require director approval.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-waivers-2026__chunk_001",
+    "source_id": "doc-waivers-2026",
+    "document_id": "doc-waivers-2026",
+    "document_version": "v1.4",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "DECISION_SUPPORT",
+    "policy_scope": "FINANCIAL",
+    "content": "Waivers exceeding $200 require director approval.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-eeo-policy__chunk_000",
+    "source_id": "doc-eeo-policy",
+    "document_id": "doc-eeo-policy",
+    "document_version": "v3.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "HR",
+    "content": "Company hiring and technical performance evaluations must be based solely on objective skills without bias regarding age, gender, or background. All candidates must be assessed using standardized scorecards.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-eeo-policy__chunk_001",
+    "source_id": "doc-eeo-policy",
+    "document_id": "doc-eeo-policy",
+    "document_version": "v3.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "HR",
+    "content": "All candidates must be assessed using standardized scorecards.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-interview-rubric__chunk_000",
+    "source_id": "doc-interview-rubric",
+    "document_id": "doc-interview-rubric",
+    "document_version": "v2.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "HR",
+    "content": "Technical interviews must follow structured coding rubrics with two independent interviewers. Subjective impressions or culture-fit vetoes without technical justification are strictly invalid.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-interview-rubric__chunk_001",
+    "source_id": "doc-interview-rubric",
+    "document_id": "doc-interview-rubric",
+    "document_version": "v2.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "HR",
+    "content": "Subjective impressions or culture-fit vetoes without technical justification are strictly invalid.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-roaming-plan-a__chunk_000",
+    "source_id": "doc-roaming-plan-a",
+    "document_id": "doc-roaming-plan-a",
+    "document_version": "v1.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "TELECOM",
+    "content": "Plan A covers domestic calls and data only. International roaming is strictly pay-per-use at $2.50 per megabyte unless an international bundle is purchased.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-roaming-plan-a__chunk_001",
+    "source_id": "doc-roaming-plan-a",
+    "document_id": "doc-roaming-plan-a",
+    "document_version": "v1.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "TELECOM",
+    "content": "International roaming is strictly pay-per-use at $2.50 per megabyte unless an international bundle is purchased.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-roaming-plan-b__chunk_000",
+    "source_id": "doc-roaming-plan-b",
+    "document_id": "doc-roaming-plan-b",
+    "document_version": "v1.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "CUSTOMER_SUPPORT",
+    "policy_scope": "TELECOM",
+    "content": "Plan B provides complimentary international roaming across 45 designated countries in North America and Europe, but roaming in other territories is excluded and requires an add-on pass.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-auth-mfa__chunk_000",
+    "source_id": "doc-auth-mfa",
+    "document_id": "doc-auth-mfa",
+    "document_version": "v2.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "SECURITY",
+    "content": "Multi-factor authentication (MFA) via hardware security key or authenticator app is strictly mandatory for all administrative access. SMS-based 2FA is prohibited for production environments due to SIM swapping risks.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-auth-mfa__chunk_001",
+    "source_id": "doc-auth-mfa",
+    "document_id": "doc-auth-mfa",
+    "document_version": "v2.0",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "SECURITY",
+    "content": "SMS-based 2FA is prohibited for production environments due to SIM swapping risks.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-password-policy__chunk_000",
+    "source_id": "doc-password-policy",
+    "document_id": "doc-password-policy",
+    "document_version": "v2.5",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "SECURITY",
+    "content": "Corporate passwords must be at least 14 characters long containing letters, numbers, and symbols. Passwords must be rotated every 90 days and reuse of the last 10 passwords is prohibited.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-password-policy__chunk_001",
+    "source_id": "doc-password-policy",
+    "document_id": "doc-password-policy",
+    "document_version": "v2.5",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "SECURITY",
+    "content": "Passwords must be rotated every 90 days and reuse of the last 10 passwords is prohibited.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-travel-flights__chunk_000",
+    "source_id": "doc-travel-flights",
+    "document_id": "doc-travel-flights",
+    "document_version": "v1.8",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "TRAVEL",
+    "content": "Economy class is mandatory for all domestic flights under 6 hours duration. Business class airfare requires VP approval and is only permitted on nonstop flights exceeding 6 hours.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-travel-flights__chunk_001",
+    "source_id": "doc-travel-flights",
+    "document_id": "doc-travel-flights",
+    "document_version": "v1.8",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "TRAVEL",
+    "content": "Business class airfare requires VP approval and is only permitted on nonstop flights exceeding 6 hours.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-travel-meals__chunk_000",
+    "source_id": "doc-travel-meals",
+    "document_id": "doc-travel-meals",
+    "document_version": "v1.2",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "TRAVEL",
+    "content": "Daily business travel meal per diem is capped at $75 per day. Itemized receipts are mandatory for all client meals or expenditures involving alcohol.",
+    "metadata": {
+      "is_current": true
+    }
+  },
+  {
+    "chunk_id": "doc-travel-meals__chunk_001",
+    "source_id": "doc-travel-meals",
+    "document_id": "doc-travel-meals",
+    "document_version": "v1.2",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "authority": "HIGH",
+    "application_profile": "INTERNAL_KNOWLEDGE",
+    "policy_scope": "TRAVEL",
+    "content": "Itemized receipts are mandatory for all client meals or expenditures involving alcohol.",
+    "metadata": {
+      "is_current": true
+    }
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "total_insufficient_cases": 7,
+  "all_gemini_bypassed": true,
+  "zero_fabricated_support": true,
+  "records": [
+    {
+      "case_id": "holdout-insuff-001",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-002",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-003",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-004",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-005",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-006",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    },
+    {
+      "case_id": "holdout-insuff-007",
+      "expected_nli": "INSUFFICIENT_EVIDENCE",
+      "actual_nli": "INSUFFICIENT_EVIDENCE",
+      "expected_action": "ESCALATE",
+      "actual_action": "ESCALATE",
+      "gemini_bypassed": true,
+      "fabricated_support": false
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "gemini_calls_always_on": 50,
+  "gemini_calls_selective": 21,
+  "calls_avoided": 29,
+  "percentage_calls_avoided": 0.58,
+  "action_accuracy_always_on": 0.7,
+  "action_accuracy_selective": 0.74,
+  "unsafe_pass_always_on": 0.16,
+  "unsafe_pass_selective": 0.12,
+  "latency_p50_always_on": 5.232600000454113,
+  "latency_p50_selective_low_risk": 5.580699998972705,
+  "latency_p95_selective_high_sev": 14377.063500000077,
+  "tokens_saved": 8294
+}

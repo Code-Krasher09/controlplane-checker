@@ -1,0 +1,337 @@
+import json
+from pathlib import Path
+
+out_dir = Path("data/evaluation/retrieval_bench")
+out_dir.mkdir(parents=True, exist_ok=True)
+
+cases = [
+    # 1. Exact Lexical Match
+    {
+        "case_id": "ret-lex-01",
+        "case_type": "exact_lexical_match",
+        "query": "Standard retail return policy permits full refunds within 30 days of product delivery in original packaging.",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": ["doc-returns-2026", "doc-returns-2024"],
+        "required_evidence_ids": ["doc-returns-2026"],
+        "difficulty": "EASY"
+    },
+    {
+        "case_id": "ret-lex-02",
+        "case_type": "exact_lexical_match",
+        "query": "Customer courtesy fee waivers are strictly capped at $200 per account.",
+        "application_profile": "DECISION_SUPPORT",
+        "policy_scope": "FINANCIAL",
+        "relevant_evidence_ids": ["doc-waivers-2026", "doc-waivers-2024"],
+        "required_evidence_ids": ["doc-waivers-2026"],
+        "difficulty": "EASY"
+    },
+    {
+        "case_id": "ret-lex-03",
+        "case_type": "exact_lexical_match",
+        "query": "Plan B provides complimentary international roaming across 45 designated countries.",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "TELECOM",
+        "relevant_evidence_ids": ["doc-roaming-plan-b"],
+        "required_evidence_ids": ["doc-roaming-plan-b"],
+        "difficulty": "EASY"
+    },
+
+    # 2. Semantic Paraphrase (different vocabulary, same meaning)
+    {
+        "case_id": "ret-para-01",
+        "case_type": "semantic_paraphrase",
+        "query": "Can shoppers get all their cash returned if they send back goods within one month of arrival?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": ["doc-returns-2026", "doc-returns-2024"],
+        "required_evidence_ids": ["doc-returns-2026"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-para-02",
+        "case_type": "semantic_paraphrase",
+        "query": "What is the maximum courtesy billing credit an agent can give a client before requiring manager authorization?",
+        "application_profile": "DECISION_SUPPORT",
+        "policy_scope": "FINANCIAL",
+        "relevant_evidence_ids": ["doc-waivers-2026", "doc-waivers-2024"],
+        "required_evidence_ids": ["doc-waivers-2026"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-para-03",
+        "case_type": "semantic_paraphrase",
+        "query": "Are candidates evaluated purely on demonstrated technical competence without demographic discrimination?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "HR",
+        "relevant_evidence_ids": ["doc-eeo-policy", "doc-interview-rubric"],
+        "required_evidence_ids": ["doc-eeo-policy"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-para-04",
+        "case_type": "semantic_paraphrase",
+        "query": "Is overseas cellular data included at no extra cost in European destinations on the secondary tier plan?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "TELECOM",
+        "relevant_evidence_ids": ["doc-roaming-plan-b", "doc-roaming-plan-a"],
+        "required_evidence_ids": ["doc-roaming-plan-b"],
+        "difficulty": "NORMAL"
+    },
+
+    # 3. No Exact Keyword Overlap
+    {
+        "case_id": "ret-nokw-01",
+        "case_type": "no_keyword_overlap",
+        "query": "Can a buyer obtain a total monetary reimbursement four weeks post-shipment?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": ["doc-returns-2026", "doc-returns-2024"],
+        "required_evidence_ids": ["doc-returns-2026"],
+        "difficulty": "HARD"
+    },
+    {
+        "case_id": "ret-nokw-02",
+        "case_type": "no_keyword_overlap",
+        "query": "Hardware dongles or TOTP smartphone authenticators must guard root privileges.",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "SECURITY",
+        "relevant_evidence_ids": ["doc-auth-mfa"],
+        "required_evidence_ids": ["doc-auth-mfa"],
+        "difficulty": "HARD"
+    },
+    {
+        "case_id": "ret-nokw-03",
+        "case_type": "no_keyword_overlap",
+        "query": "Flying premium cabin domestically necessitates executive vice president signoff for transcontinental journeys.",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "TRAVEL",
+        "relevant_evidence_ids": ["doc-travel-flights"],
+        "required_evidence_ids": ["doc-travel-flights"],
+        "difficulty": "HARD"
+    },
+
+    # 4. Multi-hop / Composite Information
+    {
+        "case_id": "ret-mhop-01",
+        "case_type": "multi_hop",
+        "query": "Do hiring decisions require structured coding rubrics and two independent evaluators?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "HR",
+        "relevant_evidence_ids": ["doc-interview-rubric", "doc-eeo-policy"],
+        "required_evidence_ids": ["doc-interview-rubric"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-mhop-02",
+        "case_type": "multi_hop",
+        "query": "What are the rules for travel dining allowances and when are detailed itemized tabs required?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "TRAVEL",
+        "relevant_evidence_ids": ["doc-travel-meals"],
+        "required_evidence_ids": ["doc-travel-meals"],
+        "difficulty": "NORMAL"
+    },
+
+    # 5. Conditional Policy
+    {
+        "case_id": "ret-cond-01",
+        "case_type": "conditional_policy",
+        "query": "Under what condition can a fee waiver exceed $200 per account?",
+        "application_profile": "DECISION_SUPPORT",
+        "policy_scope": "FINANCIAL",
+        "relevant_evidence_ids": ["doc-waivers-2026"],
+        "required_evidence_ids": ["doc-waivers-2026"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-cond-02",
+        "case_type": "conditional_policy",
+        "query": "When is business class air travel permitted for domestic corporate trips?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "TRAVEL",
+        "relevant_evidence_ids": ["doc-travel-flights"],
+        "required_evidence_ids": ["doc-travel-flights"],
+        "difficulty": "NORMAL"
+    },
+
+    # 6. Policy Exceptions
+    {
+        "case_id": "ret-exc-01",
+        "case_type": "exceptions",
+        "query": "Are customized or personalized monogrammed items eligible for full refunds?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": ["doc-returns-2026"],
+        "required_evidence_ids": ["doc-returns-2026"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-exc-02",
+        "case_type": "exceptions",
+        "query": "Is international roaming included in Asian or African destinations under Plan B?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "TELECOM",
+        "relevant_evidence_ids": ["doc-roaming-plan-b"],
+        "required_evidence_ids": ["doc-roaming-plan-b"],
+        "difficulty": "NORMAL"
+    },
+
+    # 7. Distractors / Out of Scope
+    {
+        "case_id": "ret-dist-01",
+        "case_type": "distractors",
+        "query": "What is the pet policy for bringing dogs into the regional branch office building?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "FACILITIES",
+        "relevant_evidence_ids": [],
+        "required_evidence_ids": [],
+        "difficulty": "HARD"
+    },
+    {
+        "case_id": "ret-dist-02",
+        "case_type": "distractors",
+        "query": "How many days of paid paternity leave are provided to warehouse contractors?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "HR",
+        "relevant_evidence_ids": [],
+        "required_evidence_ids": [],
+        "difficulty": "HARD"
+    },
+
+    # 8. Stale vs Current Document Versioning
+    {
+        "case_id": "ret-stale-01",
+        "case_type": "stale_document",
+        "query": "What is the current 2026 return window and is there any 15% restocking fee charged?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": ["doc-returns-2026", "doc-returns-2024"],
+        "required_evidence_ids": ["doc-returns-2026"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-stale-02",
+        "case_type": "stale_document",
+        "query": "Does a representative have unilateral discretion to issue $50 credits under the legacy guideline?",
+        "application_profile": "DECISION_SUPPORT",
+        "policy_scope": "FINANCIAL",
+        "relevant_evidence_ids": ["doc-waivers-2026", "doc-waivers-2024"],
+        "required_evidence_ids": ["doc-waivers-2026"],
+        "difficulty": "NORMAL"
+    },
+
+    # 9. Wrong Application Scope (Metadata Filtered)
+    {
+        "case_id": "ret-scope-01",
+        "case_type": "wrong_application_scope",
+        "query": "What are the engineering hiring scorecard criteria and anti-bias rules?",
+        "application_profile": "CUSTOMER_SUPPORT",  # Profile mismatch! HR docs are for INTERNAL_KNOWLEDGE
+        "policy_scope": "RETAIL",
+        "relevant_evidence_ids": [],
+        "required_evidence_ids": [],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-scope-02",
+        "case_type": "wrong_application_scope",
+        "query": "Can customer service agents give $200 fee waivers to buyers?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "HR",  # Profile/Scope mismatch
+        "relevant_evidence_ids": [],
+        "required_evidence_ids": [],
+        "difficulty": "NORMAL"
+    },
+
+    # 10. Security Authentication & Credential Rules
+    {
+        "case_id": "ret-sec-01",
+        "case_type": "security_rules",
+        "query": "Is SMS text message verification permitted for logging into production servers?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "SECURITY",
+        "relevant_evidence_ids": ["doc-auth-mfa"],
+        "required_evidence_ids": ["doc-auth-mfa"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-sec-02",
+        "case_type": "security_rules",
+        "query": "What is the minimum character length required for passwords and how frequently must they be changed?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "SECURITY",
+        "relevant_evidence_ids": ["doc-password-policy"],
+        "required_evidence_ids": ["doc-password-policy"],
+        "difficulty": "NORMAL"
+    },
+
+    # 11. Conflicting / Ambiguous Documents
+    {
+        "case_id": "ret-conf-01",
+        "case_type": "conflicting_documents",
+        "query": "What are the cellular roaming charges when traveling outside the country across different plans?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "TELECOM",
+        "relevant_evidence_ids": ["doc-roaming-plan-b", "doc-roaming-plan-a"],
+        "required_evidence_ids": ["doc-roaming-plan-b"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-conf-02",
+        "case_type": "conflicting_documents",
+        "query": "Can customer service issue unconditional $1000 fee waivers?",
+        "application_profile": "DECISION_SUPPORT",
+        "policy_scope": "FINANCIAL",
+        "relevant_evidence_ids": ["doc-waivers-2026"],
+        "required_evidence_ids": ["doc-waivers-2026"],
+        "difficulty": "NORMAL"
+    },
+
+    # 12. Highly Similar but Irrelevant Documents
+    {
+        "case_id": "ret-simirr-01",
+        "case_type": "similar_but_irrelevant",
+        "query": "Are hotel lodging fees capped at $75 per night for business travel?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "TRAVEL",
+        "relevant_evidence_ids": ["doc-travel-meals"],  # Meal per diem is $75, not hotel lodging
+        "required_evidence_ids": [],
+        "difficulty": "HARD"
+    },
+    {
+        "case_id": "ret-simirr-02",
+        "case_type": "similar_but_irrelevant",
+        "query": "Is international roaming on Plan A free across 45 European countries?",
+        "application_profile": "CUSTOMER_SUPPORT",
+        "policy_scope": "TELECOM",
+        "relevant_evidence_ids": ["doc-roaming-plan-a", "doc-roaming-plan-b"],
+        "required_evidence_ids": ["doc-roaming-plan-a"],
+        "difficulty": "HARD"
+    },
+    {
+        "case_id": "ret-simirr-03",
+        "case_type": "similar_but_irrelevant",
+        "query": "Can managers approve business class airfare on short 2-hour domestic flights?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "TRAVEL",
+        "relevant_evidence_ids": ["doc-travel-flights"],
+        "required_evidence_ids": ["doc-travel-flights"],
+        "difficulty": "NORMAL"
+    },
+    {
+        "case_id": "ret-simirr-04",
+        "case_type": "similar_but_irrelevant",
+        "query": "Are passwords permitted to be 10 characters long if they contain special symbols?",
+        "application_profile": "INTERNAL_KNOWLEDGE",
+        "policy_scope": "SECURITY",
+        "relevant_evidence_ids": ["doc-password-policy"],
+        "required_evidence_ids": ["doc-password-policy"],
+        "difficulty": "NORMAL"
+    }
+]
+
+with open(out_dir / "retrieval_cases.jsonl", "w", encoding="utf-8") as f:
+    for c in cases:
+        f.write(json.dumps(c) + "\n")
+
+print(f"Generated {len(cases)} retrieval benchmark cases in {out_dir / 'retrieval_cases.jsonl'}")

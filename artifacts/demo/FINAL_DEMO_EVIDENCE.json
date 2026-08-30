@@ -1,0 +1,36 @@
+{
+  "manifest": {
+    "version": "1.3.0",
+    "build_state": "FROZEN_VALIDATED",
+    "test_suite": "130/130 PASSED (100%)",
+    "models": {
+      "local_nli": "cross-encoder/nli-deberta-v3-small",
+      "cloud_judge": "gemini-flash-lite-latest",
+      "embeddings": "sentence-transformers/all-MiniLM-L6-v2"
+    }
+  },
+  "canonical_pitch_metrics": {
+    "action_accuracy": "74.0%",
+    "high_severity_unsafe_pass_rate": "21.4% (down from 82.1% baseline)",
+    "low_risk_p95_latency": "53.53 ms",
+    "cloud_gemini_invocation_rate": "42.0%",
+    "cloud_gemini_calls_avoided": "58.0%",
+    "evidence_insufficiency_correctness": "100.0%",
+    "repair_success_rate": "100.0% on repairable contradictions",
+    "tested_threats_blocked": "100.0% (4/4 SSN cases)"
+  },
+  "validated_claims": [
+    "58% Fewer Cloud Gemini Calls on 50-Case Holdout",
+    "86.7% Semantic Microbenchmark Accuracy",
+    "100% Contradiction Recall on Complex Semantic Sub-categories",
+    "Low-Risk Path P95 = 53.53 ms in Local Prototype Environment",
+    "100% of Tested PII/Security Threat Cases Blocked",
+    "Preserves High-Risk Safety via Hybrid Escalation",
+    "Missing Evidence Never Manufactures Support"
+  ],
+  "reproducibility": {
+    "scenarios_tested": 6,
+    "runs_evaluated": 2,
+    "consistency": "100% Deterministic Match"
+  }
+}
